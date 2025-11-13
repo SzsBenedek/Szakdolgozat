@@ -5,8 +5,8 @@ import numpy as np
 import joblib
 import matplotlib.pyplot as plt
 from sklearn.decomposition import PCA
-from feature_extraction import extract_features, extract_featuresFFT, extract_featuresFFT_epoch
-from train_model import train_and_evaluate_SVM, train_and_evaluate_rf
+from feature_extraction import extract_features, extract_featuresFFT, extract_featuresFFT_freq
+from train_model import train_and_evaluate_svm, train_and_evaluate_rf, train_and_evaluate_xgb, train_and_evaluate_rf_mlp
 import warnings
 
 warnings.filterwarnings("ignore")
@@ -14,12 +14,14 @@ warnings.filterwarnings("ignore")
 FEATURE_FUNCS = {
     'Simple features': extract_features,
     'FFT features': extract_featuresFFT,
-    'FFT epoch features': extract_featuresFFT_epoch
+    'FFT features freq': extract_featuresFFT_freq
 }
 
 MODELS = {
-    'SVM': train_and_evaluate_SVM,
-    'Random Forest': train_and_evaluate_rf
+    'SVM': train_and_evaluate_svm,
+    'Random Forest': train_and_evaluate_rf,
+    'Random Forest MLP': train_and_evaluate_rf_mlp,
+    'XGBoost': train_and_evaluate_xgb
 }
 
 # Globális változók
@@ -74,7 +76,7 @@ def run_training():
     last_used_feature = feature_name
 
     messagebox.showinfo("Kész", f"A {model_name} modell betanítva a {feature_name} alapján.")
-
+"""
 def show_visuals():
     if last_used_feature is None:
         messagebox.showerror("Hiba", "Először tanítsd meg a modellt!")
@@ -85,14 +87,38 @@ def show_visuals():
     X_2d = pca.fit_transform(X)
 
     plt.figure(figsize=(8,6))
-    plt.scatter(X_2d[y==0,0], X_2d[y==0,1], c='green', label='Kontroll', alpha=0.6)
-    plt.scatter(X_2d[y==1,0], X_2d[y==1,1], c='red', label='Beteg', alpha=0.6)
+    plt.scatter(X_2d[y==0, 0], X_2d[y==0, 1], c='green', label='Kontroll', alpha=0.6)
+    plt.scatter(X_2d[y==1, 0], X_2d[y==1, 1], c='red', label='Beteg', alpha=0.6)
     plt.xlabel('PCA 1')
     plt.ylabel('PCA 2')
     plt.title('EEG feature tér – PCA redukció')
     plt.legend()
     plt.grid(True)
     plt.show()
+"""
+def show_visuals():
+    if last_used_feature is None:
+        messagebox.showerror("Hiba", "Először tanítsd meg a modellt!")
+        return
+
+    X, y = load_data(FEATURE_FUNCS[last_used_feature])
+    pca = PCA(n_components=2)
+    X_2d = pca.fit_transform(X)
+
+    X_2d_shifted = X_2d - X_2d.min(axis=0) + 1e-6
+
+    plt.figure(figsize=(8,6))
+    plt.scatter(X_2d_shifted[y==0,0], X_2d_shifted[y==0,1], c='green', label='Kontroll', alpha=0.6)
+    plt.scatter(X_2d_shifted[y==1,0], X_2d_shifted[y==1,1], c='red', label='Beteg', alpha=0.6)
+    plt.xlabel('PCA 1 (log skála)')
+    plt.ylabel('PCA 2 (log skála)')
+    plt.title('EEG feature tér – PCA redukció (log skálán)')
+    plt.xscale('log')
+    plt.yscale('log')
+    plt.legend()
+    plt.grid(True, which='both', linestyle='--', alpha=0.5)
+    plt.show()
+
 
 def show_last_run_info():
     global last_run_info
@@ -106,6 +132,17 @@ def show_last_run_info():
     st.pack(padx=10, pady=10)
     st.insert(tk.END, last_run_info)
     st.configure(state='disabled')
+def update_feature_options(event=None):
+    model_name = model_var.get()
+    if model_name == "Random Forest":
+        # Csak Simple features engedélyezett
+        feature_menu['values'] = ['Simple features']
+        feature_var.set('Simple features')
+        feature_menu.config(state='disabled')  # ne lehessen átállítani
+    else:
+        # Minden feature extraction elérhető
+        feature_menu['values'] = list(FEATURE_FUNCS.keys())
+        feature_menu.config(state='readonly')
 
 def predict_file():
     global last_used_feature
@@ -128,8 +165,13 @@ def predict_file():
 
     if model_name == "SVM":
         model = joblib.load("svm_model.pkl")
-    else:
+    if model_name == "XGBoost":
+        model = joblib.load("xgb_model.pkl")
+    if model_name == "Random Forest":
         model = joblib.load("rf_model.pkl")
+    if model_name == "Random Forest MLP":
+        model = joblib.load("rf_mlp_model.pkl")
+
 
     pred = model.predict(features)[0]
     result = "BETEG" if pred == 1 else "EGÉSZSÉGES"
@@ -143,6 +185,7 @@ tk.Label(root, text="Válassz modellt:").grid(row=0, column=0, padx=10, pady=10)
 model_var = tk.StringVar()
 model_menu = ttk.Combobox(root, textvariable=model_var, values=list(MODELS.keys()), state="readonly")
 model_menu.grid(row=0, column=1, padx=10, pady=10)
+model_menu.bind("<<ComboboxSelected>>", update_feature_options)
 
 tk.Label(root, text="Válassz feature extraction-t:").grid(row=1, column=0, padx=10, pady=10)
 feature_var = tk.StringVar()

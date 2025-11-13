@@ -91,7 +91,7 @@ def extract_featuresFFT(filepath, sfreq=256, epoch_sec=2, max_epochs=5): #FFT al
     return np.array(features, dtype=float)
 
 
-def extract_featuresFFT_epoch(filepath, sfreq=256, epoch_sec=2, max_epochs=5): #FFT alapu epochonkenti featureok .8333
+def extract_featuresFFT_freq(filepath, sfreq=256, epoch_sec=2, max_epochs=5): #FFT alapu epochonkenti featureok .8333
     df = pd.read_csv(filepath, sep=';')
 
     eeg_cols = ['alpha1','alpha2','beta1','beta2','theta','gamma1','gamma2']
