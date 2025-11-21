@@ -16,9 +16,9 @@ def extract_features(filepath):   #egyszeru statisztiaki featureok .9166
     for col in eeg_cols:
         x = data[col].values
         features.extend([
-            np.mean(x),
-            np.std(x),
-            np.mean(x ** 2)
+            np.mean(x), #atlag (adott oszlop atlaga(Alpha, Theta...))
+            np.std(x), #szórás
+            np.mean(x ** 2) #teljesitmenybecsles (jel teljesitmeny = atlagos negyzetes ertek)
         ])
 
     try:
@@ -110,7 +110,7 @@ def extract_featuresFFT_freq(filepath, sfreq=256, epoch_sec=2, max_epochs=5): #F
     n_epochs = min(n_epochs, max_epochs)
     freqs = np.fft.rfftfreq(epoch_len, 1/sfreq)
     alpha_idx = (freqs >= 8) & (freqs <= 12)
-    beta_idx  = (freqs >= 13) & (freqs <= 30)
+    beta_idx = (freqs >= 13) & (freqs <= 30)
     theta_idx = (freqs >= 4) & (freqs <= 7)
     gamma_idx = (freqs >= 30) & (freqs <= 45)
 

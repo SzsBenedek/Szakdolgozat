@@ -48,7 +48,6 @@ def evaluate_xgboost(X, y, random_state=42, n_splits=10):
 if __name__ == "__main__":
     from sklearn.datasets import make_classification
 
-    # Tesztadat generálása
     X, y = make_classification(n_samples=100, n_features=10, random_state=42)
 
     print("=== Random Forest Cross-Validation Példa ===")

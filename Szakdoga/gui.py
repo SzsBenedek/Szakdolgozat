@@ -72,7 +72,6 @@ def run_training():
         f"Confusion matrix:\n{cm}"
     )
 
-    # Eltároljuk a legutóbbi futtatásnál használt feature extraction-t
     last_used_feature = feature_name
 
     messagebox.showinfo("Kész", f"A {model_name} modell betanítva a {feature_name} alapján.")
@@ -135,12 +134,10 @@ def show_last_run_info():
 def update_feature_options(event=None):
     model_name = model_var.get()
     if model_name == "Random Forest":
-        # Csak Simple features engedélyezett
         feature_menu['values'] = ['Simple features']
         feature_var.set('Simple features')
         feature_menu.config(state='disabled')  # ne lehessen átállítani
     else:
-        # Minden feature extraction elérhető
         feature_menu['values'] = list(FEATURE_FUNCS.keys())
         feature_menu.config(state='readonly')
 

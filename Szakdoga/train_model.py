@@ -80,9 +80,7 @@ class RF_MLP_Combined(BaseEstimator, ClassifierMixin):
         self.mlp_model = mlp_model
 
     def predict(self, X):
-        # 1️⃣ először a Random Forest probability-jeit számítjuk
         rf_proba = self.rf_model.predict_proba(X)
-        # 2️⃣ azt adjuk az MLP-nek bemenetként
         return self.mlp_model.predict(rf_proba)
 
     def predict_proba(self, X):
@@ -132,7 +130,6 @@ def train_and_evaluate_rf_mlp(X, y):
     bal_acc = balanced_accuracy_score(y_test, y_pred)
     cm = confusion_matrix(y_test, y_pred)
 
-    # 🔥 Itt hozzuk létre a kombinált modellt, ami mindkettőt tartalmazza
     combined_model = RF_MLP_Combined(rf_best, mlp)
     joblib.dump(combined_model, 'rf_mlp_model.pkl')
 

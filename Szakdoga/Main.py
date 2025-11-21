@@ -40,10 +40,7 @@ def main():
     print(f"Összes minta: {len(X)}, jellemzők száma: {X.shape[1]}")
     print(f"Osztályok aránya – beteg: {sum(y)}, egészséges: {len(y) - sum(y)}")
 
-    # Tanítás és kiértékelés
     train_and_evaluate(X, y)
-
-    # Példa új fájl predikciójára
     test_file = 'data/beteg/Zsuzsi_Bartok5.csv'
     result = predict_csv(test_file)
     print(f"\n{test_file} → {result}")
