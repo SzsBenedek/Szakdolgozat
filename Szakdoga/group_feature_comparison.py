@@ -27,7 +27,10 @@ def load_group_means(folder):
 
     return np.array(eeg_means), np.array(mental_means), eeg_cols, mental_cols
 
+<<<<<<< HEAD
 
+=======
+>>>>>>> ef7fbdd38e187fedfa04e0eb3e4e52954a8ca056
 def plot_eeg_comparison(cols, beteg_avg, kontroll_avg):
     x = np.arange(len(cols))
     width = 0.35
@@ -43,7 +46,10 @@ def plot_eeg_comparison(cols, beteg_avg, kontroll_avg):
     plt.grid(True)
     plt.tight_layout()
 
+<<<<<<< HEAD
 
+=======
+>>>>>>> ef7fbdd38e187fedfa04e0eb3e4e52954a8ca056
 def plot_mental_comparison(cols, beteg_avg, kontroll_avg):
     x = np.arange(len(cols))
     width = 0.35
@@ -59,7 +65,10 @@ def plot_mental_comparison(cols, beteg_avg, kontroll_avg):
     plt.grid(True)
     plt.tight_layout()
 
+<<<<<<< HEAD
 
+=======
+>>>>>>> ef7fbdd38e187fedfa04e0eb3e4e52954a8ca056
 def main():
     beteg_path = "data/beteg"
     kontroll_path = "data/egeszseges"
@@ -74,8 +83,13 @@ def main():
     kontroll_mental_avg = np.mean(kontroll_mental, axis=0)
 
     plot_eeg_comparison(eeg_cols, beteg_eeg_avg, kontroll_eeg_avg)
+<<<<<<< HEAD
     plot_mental_comparison(mental_cols, beteg_mental_avg, kontroll_mental_avg)
 
+=======
+
+    plot_mental_comparison(mental_cols, beteg_mental_avg, kontroll_mental_avg)
+>>>>>>> ef7fbdd38e187fedfa04e0eb3e4e52954a8ca056
 
     print("\nEEG HULLÁM KÜLÖNBSÉGEK:\n")
     for c, b, k in zip(eeg_cols, beteg_eeg_avg, kontroll_eeg_avg):
@@ -84,7 +98,15 @@ def main():
     print("\nATTENTION & MEDITATION KÜLÖNBSÉGEK:\n")
     for c, b, k in zip(mental_cols, beteg_mental_avg, kontroll_mental_avg):
         print(f"{c:10s} | Beteg: {b:.4f} | Kontroll: {k:.4f} | Diff: {abs(b-k):.4f}")
+<<<<<<< HEAD
     plt.show()
 
 if __name__ == "__main__":
     main()
+=======
+
+
+if __name__ == "__main__":
+    main()
+    plt.show()
+>>>>>>> ef7fbdd38e187fedfa04e0eb3e4e52954a8ca056
