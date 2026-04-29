@@ -27,6 +27,58 @@ MODELS = {
 # Globális változók
 last_run_info = ""
 last_used_feature = None
+last_feature_importances = None
+last_feature_names = None
+
+def get_feature_names(feature_name, n_features):
+    eeg_cols = ['alpha1', 'alpha2', 'beta1', 'beta2', 'theta', 'gamma1', 'gamma2']
+    stats_cols = ['attention', 'meditation']
+    ratio_names = [
+        'alpha1/beta1', 'alpha2/beta2',
+        'theta/alpha1', 'theta/alpha2',
+        'gamma1/total', 'gamma2/total'
+    ]
+
+    names = []
+
+    if feature_name == 'Statistical':
+        for col in eeg_cols + stats_cols:
+            names += [f'{col}_mean', f'{col}_std', f'{col}_rms']
+        names += ratio_names
+
+    elif feature_name == 'Phase epoch':
+        for col in eeg_cols:
+            names += [f'{col}_mean', f'{col}_std', f'{col}_rms']
+        for epoch in range(5):
+            for col in eeg_cols:
+                names += [
+                    f'e{epoch+1}_{col}_phase_mean',
+                    f'e{epoch+1}_{col}_phase_std',
+                    f'e{epoch+1}_{col}_phase_max'
+                ]
+        for col in stats_cols:
+            names += [f'{col}_mean', f'{col}_std']
+        names += ratio_names
+
+    elif feature_name == 'Phase band':
+        for col in eeg_cols:
+            names += [f'{col}_mean', f'{col}_std', f'{col}_rms']
+        bands = ['alpha1', 'alpha2', 'beta1', 'beta2', 'theta', 'gamma1', 'gamma2']
+        for epoch in range(5):
+            for col in eeg_cols:
+                for band in bands:
+                    names.append(f'e{epoch+1}_{col}_{band}_phase')
+        for epoch in range(5):
+            for col in stats_cols:
+                names += [f'e{epoch+1}_{col}_mean', f'e{epoch+1}_{col}_std']
+        names += ratio_names
+
+    # ha valamiért nem egyezik a hossz, fallback
+    if len(names) != n_features:
+        names = [f'feature_{i}' for i in range(n_features)]
+
+    return names
+
 
 def load_data(feature_func, base_dir='data'):
     X, y = [], []
@@ -46,8 +98,9 @@ def load_data(feature_func, base_dir='data'):
 
     return np.array(X), np.array(y)
 
+
 def run_training():
-    global last_run_info, last_used_feature
+    global last_run_info, last_used_feature, last_feature_importances, last_feature_names
     feature_name = feature_var.get()
     model_name = model_var.get()
 
@@ -63,7 +116,8 @@ def run_training():
         messagebox.showerror("Hiba", "Túl kevés adat a betanításhoz.")
         return
 
-    acc, bal_acc, cm = model_func(X, y)
+    acc, bal_acc, cm, feature_importances = model_func(X, y)
+
     last_run_info = (
         f"Összes minta: {len(X)}, jellemzők száma: {X.shape[1]}\n"
         f"Osztályok aránya – beteg: {sum(y)}, egészséges: {len(y)-sum(y)}\n\n"
@@ -73,28 +127,12 @@ def run_training():
     )
 
     last_used_feature = feature_name
+    last_feature_importances = feature_importances
+    last_feature_names = get_feature_names(feature_name, X.shape[1])
 
     messagebox.showinfo("Kész", f"A {model_name} modell betanítva a {feature_name} alapján.")
-"""
-def show_visuals():
-    if last_used_feature is None:
-        messagebox.showerror("Hiba", "Először tanítsd meg a modellt!")
-        return
 
-    X, y = load_data(FEATURE_FUNCS[last_used_feature])
-    pca = PCA(n_components=2)
-    X_2d = pca.fit_transform(X)
 
-    plt.figure(figsize=(8,6))
-    plt.scatter(X_2d[y==0, 0], X_2d[y==0, 1], c='green', label='Kontroll', alpha=0.6)
-    plt.scatter(X_2d[y==1, 0], X_2d[y==1, 1], c='red', label='Beteg', alpha=0.6)
-    plt.xlabel('PCA 1')
-    plt.ylabel('PCA 2')
-    plt.title('EEG feature tér – PCA redukció')
-    plt.legend()
-    plt.grid(True)
-    plt.show()
-"""
 def show_visuals():
     if last_used_feature is None:
         messagebox.showerror("Hiba", "Először tanítsd meg a modellt!")
@@ -106,9 +144,9 @@ def show_visuals():
 
     X_2d_shifted = X_2d - X_2d.min(axis=0) + 1e-6
 
-    plt.figure(figsize=(8,6))
-    plt.scatter(X_2d_shifted[y==0,0], X_2d_shifted[y==0,1], c='green', label='Kontroll', alpha=0.6)
-    plt.scatter(X_2d_shifted[y==1,0], X_2d_shifted[y==1,1], c='red', label='Beteg', alpha=0.6)
+    plt.figure(figsize=(8, 6))
+    plt.scatter(X_2d_shifted[y==0, 0], X_2d_shifted[y==0, 1], c='green', label='Kontroll', alpha=0.6)
+    plt.scatter(X_2d_shifted[y==1, 0], X_2d_shifted[y==1, 1], c='red', label='Beteg', alpha=0.6)
     plt.xlabel('PCA 1 (log skála)')
     plt.ylabel('PCA 2 (log skála)')
     plt.title('EEG feature tér – PCA redukció (log skálán)')
@@ -131,19 +169,44 @@ def show_last_run_info():
     st.pack(padx=10, pady=10)
     st.insert(tk.END, last_run_info)
     st.configure(state='disabled')
+
+
+def show_feature_importance():
+    if last_feature_importances is None:
+        messagebox.showerror("Hiba", "Először tanítsd meg a modellt!")
+        return
+
+    importances = last_feature_importances
+    names = last_feature_names
+
+    # top 20 jellemző csökkenő sorrendben
+    top_n = min(20, len(importances))
+    indices = np.argsort(importances)[::-1][:top_n]
+    top_importances = importances[indices]
+    top_names = [names[i] for i in indices]
+
+    plt.figure(figsize=(10, 8))
+    plt.barh(range(top_n), top_importances[::-1], color='steelblue')
+    plt.yticks(range(top_n), top_names[::-1])
+    plt.xlabel('Fontossági érték')
+    plt.title(f'Top {top_n} legmérvadóbb jellemző')
+    plt.tight_layout()
+    plt.show()
+
+
 def update_feature_options(event=None):
     model_name = model_var.get()
     if model_name == "Random Forest":
-        feature_menu['values'] = ['Simple features']
-        feature_var.set('Simple features')
-        feature_menu.config(state='disabled')  # ne lehessen átállítani
+        feature_menu['values'] = ['Statistical']
+        feature_var.set('Statistical')
+        feature_menu.config(state='disabled')
     else:
         feature_menu['values'] = list(FEATURE_FUNCS.keys())
         feature_menu.config(state='readonly')
 
+
 def predict_file():
     global last_used_feature
-    feature_name = feature_var.get()
     model_name = model_var.get()
 
     if last_used_feature is None:
@@ -162,19 +225,19 @@ def predict_file():
 
     if model_name == "SVM":
         model = joblib.load("svm_model.pkl")
-    if model_name == "XGBoost":
+    elif model_name == "XGBoost":
         model = joblib.load("xgb_model.pkl")
-    if model_name == "Random Forest":
+    elif model_name == "Random Forest":
         model = joblib.load("rf_model.pkl")
-    if model_name == "Random Forest MLP":
+    elif model_name == "Random Forest MLP":
         model = joblib.load("rf_mlp_model.pkl")
-
 
     pred = model.predict(features)[0]
     result = "BETEG" if pred == 1 else "EGÉSZSÉGES"
-
     messagebox.showinfo("Predikció", f"A fájl alapján: {result}")
 
+
+# GUI elemek
 root = tk.Tk()
 root.title("EEG Classification GUI")
 
@@ -198,7 +261,10 @@ visual_btn.grid(row=3, column=0, columnspan=2, pady=10)
 info_btn = tk.Button(root, text="Tanítás adatai", command=show_last_run_info, bg="lightyellow")
 info_btn.grid(row=4, column=0, columnspan=2, pady=10)
 
+importance_btn = tk.Button(root, text="Jellemzők fontossága", command=show_feature_importance, bg="lightyellow")
+importance_btn.grid(row=5, column=0, columnspan=2, pady=10)
+
 predict_btn = tk.Button(root, text="Fájl feltöltése és predikció", command=predict_file, bg="lightpink")
-predict_btn.grid(row=5, column=0, columnspan=2, pady=10)
+predict_btn.grid(row=6, column=0, columnspan=2, pady=10)
 
 root.mainloop()

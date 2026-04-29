@@ -3,6 +3,7 @@ from xgboost import XGBClassifier
 from sklearn.ensemble import RandomForestClassifier
 from sklearn.model_selection import GridSearchCV, StratifiedKFold
 from sklearn.metrics import accuracy_score, balanced_accuracy_score, confusion_matrix
+from sklearn.inspection import permutation_importance
 from sklearn.pipeline import make_pipeline
 from sklearn.neural_network import MLPClassifier
 from sklearn.preprocessing import StandardScaler
@@ -46,11 +47,14 @@ def train_and_evaluate_svm(X, y):
 
     acc, bal_acc, cm = kfold_evaluate(best_model, X, y)
 
-    # teljes adaton tanítjuk be mentés előtt
     best_model.fit(X, y)
-    joblib.dump(best_model, 'svm_model.pkl')
 
-    return acc, bal_acc, cm
+    # SVM-nél permutation importance
+    perm = permutation_importance(best_model, X, y, n_repeats=10, random_state=42, n_jobs=-1)
+    feature_importances = perm.importances_mean
+
+    joblib.dump(best_model, 'svm_model.pkl')
+    return acc, bal_acc, cm, feature_importances
 
 
 def train_and_evaluate_rf(X, y):
@@ -71,9 +75,12 @@ def train_and_evaluate_rf(X, y):
     acc, bal_acc, cm = kfold_evaluate(best_model, X, y)
 
     best_model.fit(X, y)
-    joblib.dump(best_model, 'rf_model.pkl')
 
-    return acc, bal_acc, cm
+    # Random Forest beépített feature importance
+    feature_importances = best_model.feature_importances_
+
+    joblib.dump(best_model, 'rf_model.pkl')
+    return acc, bal_acc, cm, feature_importances
 
 
 class RF_MLP_Combined(BaseEstimator, ClassifierMixin):
@@ -120,11 +127,13 @@ def train_and_evaluate_rf_mlp(X, y):
     combined_model = RF_MLP_Combined(rf_best, mlp)
     acc, bal_acc, cm = kfold_evaluate(combined_model, X, y)
 
-    # teljes adaton tanítjuk be mentés előtt
     combined_model.fit(X, y)
-    joblib.dump(combined_model, 'rf_mlp_model.pkl')
 
-    return acc, bal_acc, cm
+    # RF+MLP esetén a Random Forest részéből vesszük
+    feature_importances = rf_best.feature_importances_
+
+    joblib.dump(combined_model, 'rf_mlp_model.pkl')
+    return acc, bal_acc, cm, feature_importances
 
 
 def train_and_evaluate_xgb(X, y):
@@ -146,6 +155,9 @@ def train_and_evaluate_xgb(X, y):
     acc, bal_acc, cm = kfold_evaluate(best_model, X, y)
 
     best_model.fit(X, y)
-    joblib.dump(best_model, 'xgb_model.pkl')
 
-    return acc, bal_acc, cm
+    # XGBoost beépített feature importance
+    feature_importances = best_model.feature_importances_
+
+    joblib.dump(best_model, 'xgb_model.pkl')
+    return acc, bal_acc, cm, feature_importances

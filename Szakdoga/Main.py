@@ -1,7 +1,7 @@
 import os
 import numpy as np
-from feature_extraction import extract_features
-from feature_extraction import extract_featuresFFT
+from feature_extraction import extract_statistical
+from feature_extraction import extract_phase_epoch
 from train_model import train_and_evaluate_svm
 import warnings
 import joblib
@@ -17,18 +17,18 @@ def load_data(base_dir='data'):
 
     for file in os.listdir(beteg_dir):
         if file.endswith('.csv'):
-            X.append(extract_features(os.path.join(beteg_dir, file)))
+            X.append(extract_statistical(os.path.join(beteg_dir, file)))
             y.append(1)
 
     for file in os.listdir(kontroll_dir):
         if file.endswith('.csv'):
-            X.append(extract_features(os.path.join(kontroll_dir, file)))
+            X.append(extract_statistical(os.path.join(kontroll_dir, file)))
             y.append(0)
 
     return np.array(X), np.array(y)
 def predict_csv(file_path):
     model = joblib.load('svm_model.pkl')
-    features = extract_features(file_path).reshape(1, -1)
+    features = extract_statistical(file_path).reshape(1, -1)
     pred = model.predict(features)[0]
     return 'BETEG' if pred == 1 else 'EGÉSZSÉGES'
 
