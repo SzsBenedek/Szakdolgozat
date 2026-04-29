@@ -109,4 +109,3 @@ if __name__ == "__main__":
 if __name__ == "__main__":
     main()
     plt.show()
->>>>>>> ef7fbdd38e187fedfa04e0eb3e4e52954a8ca056

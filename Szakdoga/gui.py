@@ -5,16 +5,16 @@ import numpy as np
 import joblib
 import matplotlib.pyplot as plt
 from sklearn.decomposition import PCA
-from feature_extraction import extract_features, extract_featuresFFT, extract_featuresFFT_freq
+from feature_extraction import extract_statistical, extract_phase_epoch, extract_phase_band
 from train_model import train_and_evaluate_svm, train_and_evaluate_rf, train_and_evaluate_xgb, train_and_evaluate_rf_mlp
 import warnings
 
 warnings.filterwarnings("ignore")
 
 FEATURE_FUNCS = {
-    'Simple features': extract_features,
-    'FFT features': extract_featuresFFT,
-    'FFT features freq': extract_featuresFFT_freq
+    'Statistical': extract_statistical,
+    'Phase epoch': extract_phase_epoch,
+    'Phase band': extract_phase_band
 }
 
 MODELS = {
@@ -174,31 +174,31 @@ def predict_file():
     result = "BETEG" if pred == 1 else "EGÉSZSÉGES"
 
     messagebox.showinfo("Predikció", f"A fájl alapján: {result}")
-if __name__ == "__main__":
-    root = tk.Tk()
-    root.title("EEG Classification GUI")
 
-    tk.Label(root, text="Válassz modellt:").grid(row=0, column=0, padx=10, pady=10)
-    model_var = tk.StringVar()
-    model_menu = ttk.Combobox(root, textvariable=model_var, values=list(MODELS.keys()), state="readonly")
-    model_menu.grid(row=0, column=1, padx=10, pady=10)
-    model_menu.bind("<<ComboboxSelected>>", update_feature_options)
+root = tk.Tk()
+root.title("EEG Classification GUI")
 
-    tk.Label(root, text="Válassz feature extraction-t:").grid(row=1, column=0, padx=10, pady=10)
-    feature_var = tk.StringVar()
-    feature_menu = ttk.Combobox(root, textvariable=feature_var, values=list(FEATURE_FUNCS.keys()), state="readonly")
-    feature_menu.grid(row=1, column=1, padx=10, pady=10)
+tk.Label(root, text="Válassz modellt:").grid(row=0, column=0, padx=10, pady=10)
+model_var = tk.StringVar()
+model_menu = ttk.Combobox(root, textvariable=model_var, values=list(MODELS.keys()), state="readonly")
+model_menu.grid(row=0, column=1, padx=10, pady=10)
+model_menu.bind("<<ComboboxSelected>>", update_feature_options)
 
-    train_btn = tk.Button(root, text="Tanítás", command=run_training, bg="lightblue")
-    train_btn.grid(row=2, column=0, columnspan=2, pady=10)
+tk.Label(root, text="Válassz feature extraction-t:").grid(row=1, column=0, padx=10, pady=10)
+feature_var = tk.StringVar()
+feature_menu = ttk.Combobox(root, textvariable=feature_var, values=list(FEATURE_FUNCS.keys()), state="readonly")
+feature_menu.grid(row=1, column=1, padx=10, pady=10)
 
-    visual_btn = tk.Button(root, text="Vizualizáció", command=show_visuals, bg="lightgreen")
-    visual_btn.grid(row=3, column=0, columnspan=2, pady=10)
+train_btn = tk.Button(root, text="Tanítás", command=run_training, bg="lightblue")
+train_btn.grid(row=2, column=0, columnspan=2, pady=10)
 
-    info_btn = tk.Button(root, text="Tanítás adatai", command=show_last_run_info, bg="lightyellow")
-    info_btn.grid(row=4, column=0, columnspan=2, pady=10)
+visual_btn = tk.Button(root, text="Vizualizáció", command=show_visuals, bg="lightgreen")
+visual_btn.grid(row=3, column=0, columnspan=2, pady=10)
 
-    predict_btn = tk.Button(root, text="Fájl feltöltése és predikció", command=predict_file, bg="lightpink")
-    predict_btn.grid(row=5, column=0, columnspan=2, pady=10)
+info_btn = tk.Button(root, text="Tanítás adatai", command=show_last_run_info, bg="lightyellow")
+info_btn.grid(row=4, column=0, columnspan=2, pady=10)
 
-    root.mainloop()
+predict_btn = tk.Button(root, text="Fájl feltöltése és predikció", command=predict_file, bg="lightpink")
+predict_btn.grid(row=5, column=0, columnspan=2, pady=10)
+
+root.mainloop()

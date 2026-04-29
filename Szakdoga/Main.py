@@ -1,8 +1,8 @@
 import os
 import numpy as np
 from feature_extraction import extract_features
-from feature_extraction import extract_featuresFFT_epoch
-from train_model import train_and_evaluate
+from feature_extraction import extract_featuresFFT
+from train_model import train_and_evaluate_svm
 import warnings
 import joblib
 
@@ -40,7 +40,7 @@ def main():
     print(f"Összes minta: {len(X)}, jellemzők száma: {X.shape[1]}")
     print(f"Osztályok aránya – beteg: {sum(y)}, egészséges: {len(y) - sum(y)}")
 
-    train_and_evaluate(X, y)
+    train_and_evaluate_svm(X, y)
     test_file = 'data/beteg/Zsuzsi_Bartok5.csv'
     result = predict_csv(test_file)
     print(f"\n{test_file} → {result}")

@@ -1,7 +1,7 @@
 import pandas as pd
 import numpy as np
-def extract_features(filepath):   #egyszeru statisztiaki featureok .9166
 
+def extract_statistical(filepath):
     df = pd.read_csv(filepath, sep=';')
 
     eeg_cols = [
@@ -16,103 +16,142 @@ def extract_features(filepath):   #egyszeru statisztiaki featureok .9166
     for col in eeg_cols:
         x = data[col].values
         features.extend([
-            np.mean(x), #atlag (adott oszlop atlaga(Alpha, Theta...))
-            np.std(x), #szórás
-            np.mean(x ** 2) #teljesitmenybecsles (jel teljesitmeny = atlagos negyzetes ertek)
+            np.mean(x),
+            np.std(x),
+            np.mean(x ** 2)
         ])
 
     try:
-        alpha_power = np.mean(df['alpha1'] + df['alpha2'])
-        beta_power = np.mean(df['beta1'] + df['beta2'])
-        gamma_power = np.mean(df['gamma1'] + df['gamma2'])
+        # minden sáv külön kezelve, nem összevonva
+        alpha1_power = np.mean(df['alpha1'])
+        alpha2_power = np.mean(df['alpha2'])
+        beta1_power = np.mean(df['beta1'])
+        beta2_power = np.mean(df['beta2'])
+        gamma1_power = np.mean(df['gamma1'])
+        gamma2_power = np.mean(df['gamma2'])
         theta_power = np.mean(df['theta'])
 
-        ratio_alpha_beta = alpha_power / (beta_power + 1e-9)
-        ratio_theta_alpha = theta_power / (alpha_power + 1e-9)
-        ratio_gamma_total = gamma_power / (alpha_power + beta_power + theta_power + 1e-9)
-        features.extend([ratio_alpha_beta, ratio_theta_alpha, ratio_gamma_total])
+        total_power = alpha1_power + alpha2_power + beta1_power + beta2_power + gamma1_power + gamma2_power + theta_power + 1e-9
+
+        # arányok külön sávonként
+        features.extend([
+            alpha1_power / (beta1_power + 1e-9),   # alpha1 / beta1
+            alpha2_power / (beta2_power + 1e-9),   # alpha2 / beta2
+            theta_power / (alpha1_power + 1e-9),   # theta / alpha1
+            theta_power / (alpha2_power + 1e-9),   # theta / alpha2
+            gamma1_power / total_power,             # gamma1 / összes
+            gamma2_power / total_power,             # gamma2 / összes
+        ])
     except KeyError:
         pass
 
     return np.array(features, dtype=float)
 
 
-def extract_featuresFFT(filepath, sfreq=256, epoch_sec=2, max_epochs=5): #FFT alapu featureok .75
+def extract_phase_epoch(filepath, sfreq=256, epoch_sec=2, max_epochs=5):
     df = pd.read_csv(filepath, sep=';')
 
-    eeg_cols = ['alpha1','alpha2','beta1','beta2','theta','gamma1','gamma2']
-    stats_cols = ['attention','meditation']
+    eeg_cols = ['alpha1', 'alpha2', 'beta1', 'beta2', 'theta', 'gamma1', 'gamma2']
+    stats_cols = ['attention', 'meditation']
     eeg_cols = [col for col in eeg_cols if col in df.columns]
     stats_cols = [col for col in stats_cols if col in df.columns]
 
     data = df[eeg_cols].values
     features = []
 
-    for i, col in enumerate(eeg_cols):
+    # minden csatorna külön statisztikái
+    for i in range(len(eeg_cols)):
         x = data[:, i]
         features.extend([np.mean(x), np.std(x), np.mean(x**2)])
+
+    #epoch-ok letrehozasa
     n_samples = data.shape[0]
     epoch_len = epoch_sec * sfreq
-    n_epochs = n_samples // epoch_len
-    n_epochs = min(n_epochs, max_epochs)
+    n_epochs = min(n_samples // epoch_len, max_epochs)
 
     for i in range(n_epochs):
         start = int(i * epoch_len)
         end = int(start + epoch_len)
         epoch = data[start:end, :]
 
+        # minden csatorna külön FFT és fázisszög
         for j in range(epoch.shape[1]):
             fft_vals = np.fft.rfft(epoch[:, j])
-            fft_power = np.abs(fft_vals) ** 2
+            phase = np.angle(fft_vals)
             features.extend([
-                np.mean(fft_power),
-                np.std(fft_power),
-                np.max(fft_power)
+                np.mean(phase),
+                np.std(phase),
+                np.max(np.abs(phase))
             ])
-    n_features_per_epoch_per_chan = 3  # mean, std, max
+
+    # hianyzo epoch-ok potlasa
     missing_epochs = max_epochs - n_epochs
     if missing_epochs > 0:
-        features.extend([0] * missing_epochs * len(eeg_cols) * n_features_per_epoch_per_chan)
+        features.extend([0] * missing_epochs * len(eeg_cols) * 3)
+
+    # attention es meditation
     for col in stats_cols:
         x = df[col].values
         features.extend([np.mean(x), np.std(x)])
+
     try:
-        alpha_power = np.mean(df['alpha1'] + df['alpha2'])
-        beta_power = np.mean(df['beta1'] + df['beta2'])
-        gamma_power = np.mean(df['gamma1'] + df['gamma2'])
+        alpha1_power = np.mean(df['alpha1'])
+        alpha2_power = np.mean(df['alpha2'])
+        beta1_power = np.mean(df['beta1'])
+        beta2_power = np.mean(df['beta2'])
+        gamma1_power = np.mean(df['gamma1'])
+        gamma2_power = np.mean(df['gamma2'])
         theta_power = np.mean(df['theta'])
-        ratio_alpha_beta = alpha_power / (beta_power + 1e-9)
-        ratio_theta_alpha = theta_power / (alpha_power + 1e-9)
-        ratio_gamma_total = gamma_power / (alpha_power + beta_power + theta_power + 1e-9)
-        features.extend([ratio_alpha_beta, ratio_theta_alpha, ratio_gamma_total])
+        total_power = alpha1_power + alpha2_power + beta1_power + beta2_power + gamma1_power + gamma2_power + theta_power + 1e-9
+
+        # savaranyok
+        features.extend([
+            alpha1_power / (beta1_power + 1e-9),
+            alpha2_power / (beta2_power + 1e-9),
+            theta_power / (alpha1_power + 1e-9),
+            theta_power / (alpha2_power + 1e-9),
+            gamma1_power / total_power,
+            gamma2_power / total_power,
+        ])
     except KeyError:
         pass
 
     return np.array(features, dtype=float)
 
 
-def extract_featuresFFT_freq(filepath, sfreq=256, epoch_sec=2, max_epochs=5): #FFT alapu epochonkenti featureok .8333
+def extract_phase_band(filepath, sfreq=256, epoch_sec=2, max_epochs=5):
     df = pd.read_csv(filepath, sep=';')
 
-    eeg_cols = ['alpha1','alpha2','beta1','beta2','theta','gamma1','gamma2']
-    stats_cols = ['attention','meditation']
+    eeg_cols = ['alpha1', 'alpha2', 'beta1', 'beta2', 'theta', 'gamma1', 'gamma2']
+    stats_cols = ['attention', 'meditation']
     eeg_cols = [col for col in eeg_cols if col in df.columns]
     stats_cols = [col for col in stats_cols if col in df.columns]
 
     data = df[eeg_cols].values
     features = []
-    for i, col in enumerate(eeg_cols):
+
+    # minden csatorna külön statisztikái
+    for i in range(len(eeg_cols)):
         x = data[:, i]
         features.extend([np.mean(x), np.std(x), np.mean(x**2)])
+
     n_samples = data.shape[0]
     epoch_len = epoch_sec * sfreq
-    n_epochs = n_samples // epoch_len
-    n_epochs = min(n_epochs, max_epochs)
+    n_epochs = min(n_samples // epoch_len, max_epochs)
+
     freqs = np.fft.rfftfreq(epoch_len, 1/sfreq)
-    alpha_idx = (freqs >= 8) & (freqs <= 12)
-    beta_idx = (freqs >= 13) & (freqs <= 30)
-    theta_idx = (freqs >= 4) & (freqs <= 7)
-    gamma_idx = (freqs >= 30) & (freqs <= 45)
+
+    # minden sáv külön frekvenciahatárral
+    alpha1_idx = (freqs >= 8)  & (freqs <= 10)
+    alpha2_idx = (freqs >= 10) & (freqs <= 12)
+    beta1_idx  = (freqs >= 13) & (freqs <= 20)
+    beta2_idx  = (freqs >= 20) & (freqs <= 30)
+    theta_idx  = (freqs >= 4)  & (freqs <= 7)
+    gamma1_idx = (freqs >= 30) & (freqs <= 40)
+    gamma2_idx = (freqs >= 40) & (freqs <= 45)
+
+    band_indices = [alpha1_idx, alpha2_idx, beta1_idx, beta2_idx,
+                    theta_idx, gamma1_idx, gamma2_idx]
 
     for i in range(n_epochs):
         start = int(i * epoch_len)
@@ -121,40 +160,46 @@ def extract_featuresFFT_freq(filepath, sfreq=256, epoch_sec=2, max_epochs=5): #F
 
         for j in range(epoch.shape[1]):
             fft_vals = np.fft.rfft(epoch[:, j])
-            fft_power = np.abs(fft_vals)**2
-            features.extend([
-                np.mean(fft_power[alpha_idx]),
-                np.mean(fft_power[beta_idx]),
-                np.mean(fft_power[theta_idx]),
-                np.mean(fft_power[gamma_idx])
-            ])
+            phase = np.angle(fft_vals)
+            # minden sávhoz külön fázis átlag
+            for band_idx in band_indices:
+                features.append(np.mean(phase[band_idx]) if np.any(band_idx) else 0.0)
 
-    n_features_per_epoch_per_chan = 4  # alpha, beta, theta, gamma
+    n_features_per_epoch_per_chan = len(band_indices)
     missing_epochs = max_epochs - n_epochs
     if missing_epochs > 0:
         features.extend([0] * missing_epochs * len(eeg_cols) * n_features_per_epoch_per_chan)
 
     for col in stats_cols:
         for i in range(n_epochs):
-            start = int(i*epoch_len)
-            end = int(start+epoch_len)
+            start = int(i * epoch_len)
+            end = int(start + epoch_len)
             epoch_vals = df[col].values[start:end]
             features.extend([np.mean(epoch_vals), np.std(epoch_vals)])
+
     missing_epochs_stats = max_epochs - n_epochs
     if missing_epochs_stats > 0:
         features.extend([0] * missing_epochs_stats * len(stats_cols) * 2)
 
     try:
-        alpha_power = np.mean(df['alpha1'] + df['alpha2'])
-        beta_power = np.mean(df['beta1'] + df['beta2'])
-        gamma_power = np.mean(df['gamma1'] + df['gamma2'])
+        alpha1_power = np.mean(df['alpha1'])
+        alpha2_power = np.mean(df['alpha2'])
+        beta1_power = np.mean(df['beta1'])
+        beta2_power = np.mean(df['beta2'])
+        gamma1_power = np.mean(df['gamma1'])
+        gamma2_power = np.mean(df['gamma2'])
         theta_power = np.mean(df['theta'])
-        ratio_alpha_beta = alpha_power / (beta_power + 1e-9)
-        ratio_theta_alpha = theta_power / (alpha_power + 1e-9)
-        ratio_gamma_total = gamma_power / (alpha_power + beta_power + theta_power + 1e-9)
-        features.extend([ratio_alpha_beta, ratio_theta_alpha, ratio_gamma_total])
+        total_power = alpha1_power + alpha2_power + beta1_power + beta2_power + gamma1_power + gamma2_power + theta_power + 1e-9
+
+        features.extend([
+            alpha1_power / (beta1_power + 1e-9),
+            alpha2_power / (beta2_power + 1e-9),
+            theta_power / (alpha1_power + 1e-9),
+            theta_power / (alpha2_power + 1e-9),
+            gamma1_power / total_power,
+            gamma2_power / total_power,
+        ])
     except KeyError:
         pass
 
     return np.array(features, dtype=float)
-
