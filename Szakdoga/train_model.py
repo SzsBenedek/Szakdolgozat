@@ -33,23 +33,29 @@ def kfold_evaluate(model, X, y):
 
 
 def train_and_evaluate_svm(X, y):
+    from sklearn.pipeline import Pipeline
+    from sklearn.preprocessing import StandardScaler
+
     param_grid = {
-        'C': [0.1, 1, 10, 100],
-        'gamma': ['scale', 0.01, 0.1, 1],
-        'kernel': ['rbf', 'poly', 'sigmoid']
+        'svc__C': [0.1, 1, 10, 100],
+        'svc__gamma': ['scale', 0.01, 0.1, 1],
+        'svc__kernel': ['rbf', 'poly', 'sigmoid']
     }
 
+    pipeline = Pipeline([
+        ('scaler', StandardScaler()),
+        ('svc', SVC())
+    ])
+
     grid_search = GridSearchCV(
-        SVC(), param_grid, cv=5, scoring='accuracy', n_jobs=-1
+        pipeline, param_grid, cv=5, scoring='accuracy', n_jobs=-1
     )
     grid_search.fit(X, y)
     best_model = grid_search.best_estimator_
 
     acc, bal_acc, cm = kfold_evaluate(best_model, X, y)
-
     best_model.fit(X, y)
 
-    # SVM-nél permutation importance
     perm = permutation_importance(best_model, X, y, n_repeats=10, random_state=42, n_jobs=-1)
     feature_importances = perm.importances_mean
 

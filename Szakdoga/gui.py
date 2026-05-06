@@ -96,7 +96,9 @@ def load_data(feature_func, base_dir='data'):
             X.append(feature_func(os.path.join(kontroll_dir, file)))
             y.append(0)
 
-    return np.array(X), np.array(y)
+    X = np.array(X)
+    print(f"Betöltött adatok alakja: {X.shape}")
+    return X, np.array(y)
 
 
 def run_training():
