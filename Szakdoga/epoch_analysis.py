@@ -64,27 +64,31 @@ def compute_contrast(epochs_list):
     return contrast
 
 
-def compute_normality(epochs_list):
+def compute_ttest(beteg_contrast, egeszseges_contrast):
     """
-    Shapiro-Wilk normalitás tesztet végez minden csatornára és epochra.
-    Visszatérési érték: dict {csatorna: lista of (statisztika, p-érték) epochonként}
+    Epochonként és csatornánként elvégzi a kétmintás t-tesztet
+    a beteg és egészséges csoport kontrasztértékein.
+    Visszatérési érték: dict {csatorna: lista of (t-statisztika, p-érték) epochonként}
     """
-    normality = {col: [[] for _ in range(MAX_EPOCHS)] for col in EEG_COLS}
+    ttest_results = {col: [] for col in EEG_COLS}
 
-    for file_epochs in epochs_list:
-        for col in file_epochs:
-            for epoch_idx, epoch in enumerate(file_epochs[col]):
-                if len(epoch) >= 3:  # Shapiro-Wilk legalább 3 mintát igényel
-                    stat, p = stats.shapiro(epoch)
-                    normality[col][epoch_idx].append((stat, p))
+    for col in EEG_COLS:
+        for i in range(MAX_EPOCHS):
+            b = beteg_contrast[col][i]
+            e = egeszseges_contrast[col][i]
+            if len(b) >= 2 and len(e) >= 2:  # t-teszt legalább 2 minta kell mindkét csoportból
+                t_stat, p_val = stats.ttest_ind(b, e)
+                ttest_results[col].append((t_stat, p_val))
+            else:
+                ttest_results[col].append((0, 1.0))  # ha nincs elég adat, p=1 (nem szignifikáns)
 
-    return normality
+    return ttest_results
 
 
-def plot_all(beteg_contrast, egeszseges_contrast, beteg_normality, egeszseges_normality):
+def plot_all(beteg_contrast, egeszseges_contrast, ttest_results):
     """
-    Egy figurában jeleníti meg a kontraszt és normalitás eredményeket.
-    Felső sor: min-max kontraszt, alsó sor: normalitás p-értékek.
+    Egy figurában jeleníti meg a kontraszt és t-teszt eredményeket.
+    Felső sor: min-max kontraszt, alsó sor: t-teszt p-értékek.
     """
     n_cols = len(EEG_COLS)
     fig, axes = plt.subplots(2, n_cols, figsize=(20, 10))
@@ -111,34 +115,27 @@ def plot_all(beteg_contrast, egeszseges_contrast, beteg_normality, egeszseges_no
         ax_top.set_ylabel('Átlagos kontraszt')
         ax_top.legend(fontsize=7)
 
-        # --- Alsó sor: normalitás p-értékek ---
+        # --- Alsó sor: t-teszt p-értékek ---
         ax_bot = axes[1][idx]
 
-        beteg_pvals = [
-            np.mean([p for _, p in beteg_normality[col][i]]) if beteg_normality[col][i] else 0
-            for i in range(MAX_EPOCHS)
-        ]
-        egesz_pvals = [
-            np.mean([p for _, p in egeszseges_normality[col][i]]) if egeszseges_normality[col][i] else 0
-            for i in range(MAX_EPOCHS)
-        ]
+        pvals = [ttest_results[col][i][1] for i in range(MAX_EPOCHS)]
 
-        ax_bot.bar(x - width/2, beteg_pvals, width, label='Beteg', color='red', alpha=0.7)
-        ax_bot.bar(x + width/2, egesz_pvals, width, label='Egészséges', color='green', alpha=0.7)
+        # oszlopok színezése: szignifikáns (p<0.05) = sötét, nem szignifikáns = világos
+        colors = ['#111111' if p < 0.05 else '#aaaaaa' for p in pvals]
+        ax_bot.bar(x, pvals, width=0.5, color=colors, alpha=0.8)
 
-        # 0.05-ös határvonal – ez alatt nem normális az eloszlás
-        ax_bot.axhline(y=0.05, color='black', linestyle='--', linewidth=0.8, label='p=0.05')
+        # 0.05-ös határvonal
+        ax_bot.axhline(y=0.05, color='red', linestyle='--', linewidth=0.8, label='p=0.05')
         ax_bot.set_title(col)
         ax_bot.set_xticks(x)
         ax_bot.set_xticklabels(epoch_labels)
-        ax_bot.set_ylabel('Átlagos p-érték')
+        ax_bot.set_ylabel('p-érték')
         ax_bot.legend(fontsize=7)
 
-    # felső és alsó sor feliratai
     axes[0][0].annotate('Min-Max kontraszt', xy=(0, 0.5), xytext=(-60, 0),
                         xycoords='axes fraction', textcoords='offset points',
                         fontsize=11, ha='right', va='center', rotation=90)
-    axes[1][0].annotate('Normalitás (p-érték)', xy=(0, 0.5), xytext=(-60, 0),
+    axes[1][0].annotate('T-teszt p-érték', xy=(0, 0.5), xytext=(-60, 0),
                         xycoords='axes fraction', textcoords='offset points',
                         fontsize=11, ha='right', va='center', rotation=90)
 
@@ -146,9 +143,9 @@ def plot_all(beteg_contrast, egeszseges_contrast, beteg_normality, egeszseges_no
     plt.show()
 
 
-def print_summary(beteg_contrast, egeszseges_contrast, beteg_normality, egeszseges_normality):
+def print_summary(beteg_contrast, egeszseges_contrast, ttest_results):
     """
-    Szöveges összefoglaló a kontrast és normalitás eredményekről.
+    Szöveges összefoglaló a kontraszt és t-teszt eredményekről.
     """
     print("=" * 60)
     print("EPOCH ANALÍZIS ÖSSZEFOGLALÓ")
@@ -159,13 +156,12 @@ def print_summary(beteg_contrast, egeszseges_contrast, beteg_normality, egeszseg
         for i in range(MAX_EPOCHS):
             b_contrast = np.mean(beteg_contrast[col][i]) if beteg_contrast[col][i] else 0
             e_contrast = np.mean(egeszseges_contrast[col][i]) if egeszseges_contrast[col][i] else 0
-
-            b_pval = np.mean([p for _, p in beteg_normality[col][i]]) if beteg_normality[col][i] else 0
-            e_pval = np.mean([p for _, p in egeszseges_normality[col][i]]) if egeszseges_normality[col][i] else 0
+            t_stat, p_val = ttest_results[col][i]
+            szignifikans = "SZIGNIFIKÁNS" if p_val < 0.05 else "nem szignifikáns"
 
             print(f"  Epoch {i+1}:")
             print(f"    Kontraszt  – beteg: {b_contrast:.2f}, egészséges: {e_contrast:.2f}, különbség: {abs(b_contrast - e_contrast):.2f}")
-            print(f"    Normalitás – beteg p: {b_pval:.4f}, egészséges p: {e_pval:.4f}")
+            print(f"    T-teszt    – t={t_stat:.3f}, p={p_val:.4f} → {szignifikans}")
 
 
 if __name__ == "__main__":
@@ -177,12 +173,11 @@ if __name__ == "__main__":
     beteg_contrast = compute_contrast(beteg_epochs)
     egeszseges_contrast = compute_contrast(egeszseges_epochs)
 
-    print("Normalitás teszt futtatása...")
-    beteg_normality = compute_normality(beteg_epochs)
-    egeszseges_normality = compute_normality(egeszseges_epochs)
+    print("T-teszt futtatása...")
+    ttest_results = compute_ttest(beteg_contrast, egeszseges_contrast)
 
     print("Eredmények kiírása...")
-    print_summary(beteg_contrast, egeszseges_contrast, beteg_normality, egeszseges_normality)
+    print_summary(beteg_contrast, egeszseges_contrast, ttest_results)
 
     print("Grafikonok megjelenítése...")
-    plot_all(beteg_contrast, egeszseges_contrast, beteg_normality, egeszseges_normality)
+    plot_all(beteg_contrast, egeszseges_contrast, ttest_results)
