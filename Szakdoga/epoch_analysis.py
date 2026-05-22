@@ -4,7 +4,7 @@ import pandas as pd
 from scipy import stats
 import matplotlib.pyplot as plt
 
-# --- Konfiguráció ---
+#Konfiguráció
 DATA_DIR = 'data'
 BETEG_DIR = os.path.join(DATA_DIR, 'beteg')
 EGESZSEGES_DIR = os.path.join(DATA_DIR, 'egeszseges')
@@ -19,7 +19,7 @@ EEG_COLS = ['alpha1', 'alpha2', 'beta1', 'beta2', 'theta', 'gamma1', 'gamma2']
 def load_epochs_from_dir(directory):
     """
     Beolvassa az összes CSV fájlt egy mappából,
-    epochokra bontja őket, és visszaadja a csatornánkénti epochokat.
+    epochokra bontja őket, és visszaadja a csatornánkénti epochokat
     Visszatérési érték: lista of dict {csatorna: epochok tömbje}
     """
     all_epochs = []
@@ -50,7 +50,7 @@ def load_epochs_from_dir(directory):
 def compute_contrast(epochs_list):
     """
     Epochonként kiszámítja a min és max értékek közötti különbséget
-    minden csatornára, minden felvételre.
+    minden csatornára, minden felvételre
     Visszatérési érték: dict {csatorna: lista of kontrast értékek epochonként}
     """
     contrast = {col: [[] for _ in range(MAX_EPOCHS)] for col in EEG_COLS}
@@ -67,7 +67,7 @@ def compute_contrast(epochs_list):
 def compute_ttest(beteg_contrast, egeszseges_contrast):
     """
     Epochonként és csatornánként elvégzi a kétmintás t-tesztet
-    a beteg és egészséges csoport kontrasztértékein.
+    a beteg és egészséges csoport kontrasztértékein
     Visszatérési érték: dict {csatorna: lista of (t-statisztika, p-érték) epochonként}
     """
     ttest_results = {col: [] for col in EEG_COLS}
@@ -87,8 +87,8 @@ def compute_ttest(beteg_contrast, egeszseges_contrast):
 
 def plot_all(beteg_contrast, egeszseges_contrast, ttest_results):
     """
-    Egy figurában jeleníti meg a kontraszt és t-teszt eredményeket.
-    Felső sor: min-max kontraszt, alsó sor: t-teszt p-értékek.
+    Egy figurában jeleníti meg a kontraszt és t-teszt eredményeket
+    Felső sor: min-max kontraszt, alsó sor: t-teszt p-értékek
     """
     n_cols = len(EEG_COLS)
     fig, axes = plt.subplots(2, n_cols, figsize=(20, 10))
@@ -99,7 +99,7 @@ def plot_all(beteg_contrast, egeszseges_contrast, ttest_results):
         x = np.arange(MAX_EPOCHS)
         width = 0.35
 
-        # --- Felső sor: kontraszt ---
+        # Kontraszt
         ax_top = axes[0][idx]
 
         beteg_means = [np.mean(beteg_contrast[col][i]) if beteg_contrast[col][i] else 0
@@ -115,7 +115,7 @@ def plot_all(beteg_contrast, egeszseges_contrast, ttest_results):
         ax_top.set_ylabel('Átlagos kontraszt')
         ax_top.legend(fontsize=7)
 
-        # --- Alsó sor: t-teszt p-értékek ---
+        # t-teszt p érték
         ax_bot = axes[1][idx]
 
         pvals = [ttest_results[col][i][1] for i in range(MAX_EPOCHS)]

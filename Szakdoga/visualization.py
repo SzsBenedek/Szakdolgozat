@@ -59,7 +59,7 @@ def plot_scatter(X, y, feature_names):
     beteg_patch = mpatches.Patch(color='red', label='Beteg', alpha=0.7)
     egesz_patch = mpatches.Patch(color='green', label='Egészséges', alpha=0.7)
 
-    # --- Bal oldal: SVM top 2 ---
+    # Bal oldal: SVM top 2
     ax1 = axes[0]
     ax1.scatter(X[y==1, svm_feat1], X[y==1, svm_feat2], c='red', alpha=0.7, s=60, label='Beteg')
     ax1.scatter(X[y==0, svm_feat1], X[y==0, svm_feat2], c='green', alpha=0.7, s=60, label='Egészséges')
@@ -69,7 +69,7 @@ def plot_scatter(X, y, feature_names):
     ax1.legend(handles=[beteg_patch, egesz_patch])
     ax1.grid(True, linestyle='--', alpha=0.4)
 
-    # --- Jobb oldal: RF+MLP top 2 ---
+    # Jobb oldal: RF+MLP top 2
     ax2 = axes[1]
     ax2.scatter(X[y==1, rf_feat1], X[y==1, rf_feat2], c='red', alpha=0.7, s=60, label='Beteg')
     ax2.scatter(X[y==0, rf_feat1], X[y==0, rf_feat2], c='green', alpha=0.7, s=60, label='Egészséges')

@@ -64,7 +64,7 @@ def extract_phase_epoch(filepath, sfreq=256, epoch_sec=2, max_epochs=5):
         x = data[:, i]
         features.extend([np.mean(x), np.std(x), np.mean(x**2)])
 
-    #epoch-ok letrehozasa
+    # epoch-ok letrehozasa
     n_samples = data.shape[0]
     epoch_len = epoch_sec * sfreq
     n_epochs = min(n_samples // epoch_len, max_epochs)
