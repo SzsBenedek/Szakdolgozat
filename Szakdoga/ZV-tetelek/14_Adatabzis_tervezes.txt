@@ -1,0 +1,67 @@
+14.Tétel
+
+Relációs adatmodell:
+	-Az adatokat táblázat formájában tárolja
+
+Adatok táblázatokban
+	-Az adatokat relációkba szervezi:Minden táblázat sorokból(rekord) és oszlopokból áll(attribútum)
+	-Egy adott típusú adatot reprezentál: Pl egy vevők tábla tárolja a vevők adatait(név, telszam, stb stb)
+
+Kapcsolatok:
+	-Bizonyos szabályok szerint jönnek létre pl: egy vevő tábla kapcsolódhat egy rendelések táblához, vevőazonosító alapján
+
+-Kulcsok:
+	-Egyes rekordok azonositasahoz kulcsokat hasznalunk, ez segit a kapcsolatok meghatarozasaban
+
+Adatok tipusai:
+	-Atomi: string, szam, boolean
+	-Osszetett: egyszeru adatokbol kepezheto: lista, struktura, halmaz
+	-Null: definialatlan adatok (nem egyenlo NULLA ertekkel)
+
+Miért hasznos a relacios adatomodell? 
+	-Gondoskodik adatok tipusanak integritasarol, konzisztenciajarol
+	-Redunancia csokkentese: tablazatok es kapcsolatok helyes hasznalataval minimalizahato az adatok ismetlese
+	-Rugalmassag es bovithetoseg
+	-Adatbiztonsag: hozzaferes pontos szabalyozasa az adatbazis bintonsagat eredmenyezi 
+	
+Egyed kapcsolat diagram:
+	-grafikusan mutatja hogy nez ki az adatbazis(tablak, kapcsolatok, kulcsok)
+	
+	Elemei:
+		-Egyed (tábla) pl: vevő, rendelés Jele: téglalap
+		-Attributum pl vevő neve, egyedi azonositoja Jele: elipszis
+		-Kapcsolat - egyedek közötti kapcsolat Jele:rombusz
+		-Összetett attributum - pl lakcim, tobb attributummal rendelkezik
+		-Többértékű attributum Jele:kettos elipszis pl rendeles statusza (feldogolzva, szallitas alatt)
+		-Gyenge egyed: Az attributumok nem hatarozzak meg teljesen, kapcsolatokbol lesz meghatarozhato Jele: kettos teglalap
+		pl: szamitogep, egy embernek tobb szamitogepe is lehet, maga az alkatreszek nem hatarozzak meg egyertelmuen
+		-Meghatarozo kapcsolat: Gyenge entitast meghatarozo kapcsolat pl: rendeleshez tartozo cimzett jele:Kettos rombusz
+		-Specializalo kapcsolatok: hiararchiat jelolik az egyedek között,  Jele: Háromszög Pl: szemely tipusa (dolgozo, ugyfel)
+		
+	Kulcsok tipusai:
+	-Szuperkulcs: Egy olyan attribumut halmaz, amiben minden attributum egyedi
+	-Kulcs: Egyedi azonosito egy tablan
+	-Elsodleges kulcs: Mindig csak elsodleges kulcs lehet egy tablan, ez egyertelmuve teszi a rekordok azonositasat
+	-Kulso kulcs: Egy masik tabla elsodleges kulcsara valo hivatkozas
+	
+	EK diagram lekepezese relacios modellre
+	-Egyedek lekepezese:
+		-Minden egyedhez irunk egy relaciosemat, attributumok, elsodleges kulcs megadasa
+	-Gyenge entitasok lekepezese:pl ha egy embernek tobb azonos autoja is lehet akkor pl egy sorszam
+	-Összetett attributum:
+	-Tobberteku attribumut: Pl szerzo es konyv tablak mivel egy konyvnek tobb szerzoje is lehet, egy szerzo pedig tobb konyvnek is lehet a szerzoje
+	
+Funkcionális függőség:
+	Ha A attributum ertekeibol egyszeruen megmondhato B erteke akkor 
+	B fugg A-tol A ->B
+	pl:szemelyi szam -> Nev
+	
+	Normalizalas celja:
+		-redundancia minimalizalasa
+		-anomaliak elkerulese (torles, beszuras, modositas)
+	
+	Normalformak:
+	1NF: Nincs duplikalt rekord, egyertelmuen megkulonboztetheto kell legyen minden rekord, minden cella csak egy erteket tarolhat, minden adat atomi kell legyen
+	2NF: Meg kell felelnie 1NF szabalyainak, Minden adat egyertelmuen kell kapcsolodjon az elsodleges kulcshoz -> külön táblákba szervezés
+	3NF: 2NF szabalyainak meg kell feleljen, tranzitiv fuggosegeket keruli ki, minden attributumnak kozvetlenul kell fuggenie a kulcstol
+	

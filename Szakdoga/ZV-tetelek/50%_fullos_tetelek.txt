@@ -1,0 +1,14 @@
+1 - alga 1
+4 - bonya ✔
+5 - koszi 1
+6 - koszi 2
+8 - mestint 1
+11 - opkut 2 
+14 - adatb 1 ✔
+17 - progalap1
+18 - progalap2
+19 - prog1-2
+20 - prog1-2
+21 - prog1-2
+24 - rf 2
+27 - szar 1

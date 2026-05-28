@@ -1,0 +1,77 @@
+22 A programozási nyelvek csoportosítása (paradigmák), az egyes csoportokba tartozó nyelvek legfontosabb tulajdonságai.
+
+
+5 fő paradigma:
+	-Imperativ (proceduralis) - C , Pascal
+	-OOP - Java, c#, c++
+	-Funkcionalis - Haskell
+	-Logikai - Prolog
+	-Párhuzamos - Occam 
+	
+Imperativ:
+	-Lenyege, hogy megmondjuk mit csinaljon a gep lepesrol lepesre RECEPT
+	-Procedurális: parancsok fuggvenyben vagy eljarasokban csoportositja -> nem kell mindig leirni
+	-Jellemzo rajuk a pointer tipus -> memoria hatekony
+	
+	Előnye:
+		-Gyors, es memoriahatekony
+	Hátránya:
+		-nagyobb programoknal nehez atlatni, pointerek helytelen hasznalata nagy hibakhoz vezehet (NULL ptr, memoria szivargas)
+		
+OOP:(4 alapelv):
+	-Egységbezárás
+	-Polimorfizmus
+	-Öröklődés
+	-Absztrakció
+		-Egységbezárás:
+				-Adatokat es muveleteket egy objektumba zárjuk, belső működés el van rejtve (autó és a motorja, gáz)
+				-Biztositja, hogy vedjuk az adatokat
+		Polimorfizmus(Többalakúság):
+				-Ugyanaz a függvény több minden is csinálhat attól függően milyen osztályból van hivva, (Hang() függvény, kutya ugat, macska nyavog)
+					-Forditasideju (kulonbozo parameterek)
+					-Futasideju (orokolt fuggvenyt felulirjuk az osztalyban)
+		Öröklődés
+			-Egy osztályt örököltethetünk, a tulajdonságai átmennek a gyerek osztalyra (Állat - kutya osztaly)
+			-C++ - nal letezik gyemant oroklodes, egy osztaly tobb osztaly gyereke is lehet egyszerre
+		Absztrakcio
+			-Csak a lényeges dolgokat mutatjuk meg (Például egy autonal csak a muszerfal, kormany, pedalok vannak) a motor el van rejtve
+			-Biztositja, hogy mit mutatunk a felhasznalonak
+		
+Funkcionalis:
+	-Imperativ-al ellentetben itt megadjuk mit szeretnenk kapni matematikai függvényekkel
+	-Ciklusok helyett rekurziot hasznalunk -> ha valamit ismetelni kell a fuggveny onmagat hivja meg, ez furanak hangzik de sokszor atlathatobb, mint egy ciklus
+	-nincs mellekhatas, ugyanarra az inputra mindig ugyanazt kapjuk
+	
+	Előnyök: 
+		-Könnyű tesztelni, áttekinthető
+	Hátrányok:
+		-Nehez input/output kezelés
+		-Nehez megtanulni
+	
+Logikai:
+	-a tobbi nyelvel ellentetben csak logikai szabalyokat es tenyeket irhatunk le 
+	-a gep kovetkeztet belole
+	-Felepitese:
+			-Tenyek
+			-Szabalyok -> eggyutt a kettot hivjuk adatbazisnak
+			-Kerdesek
+	Előnyök:
+		-MI-nél hasznos
+		-Nem kell sokmindent megadni neki
+	Hátrányok:
+		-Nehéz ráérezni, átlátni
+		-Hagyományos programokat nehéz vele írni
+
+Párhuzamos:
+	-A tobbihez kepest masabb, nem egymas utan hajtodnak vegre az utasitasok, tobb minden egyszerre fut
+	
+	Problémái:
+		-Közös memória, két folyamat egyszerre próbl módosítani valamit (szemaforokkal, mutexekkel lehet megoldani)
+		-Deadlock - egymásra várnak a folyamatok
+		-éhezés - egyik folyamat sem jut eroforrashoz
+		-Kiszamithatatlan - ugyanarra az input ket kulon outputot kaphatunk
+		
+	Előnyei:
+		-gyors
+		-erős processzorokat (sok mag, sok szal)kihasznalja 
+		-elengedhetelen hatekony nagy rendszereknel

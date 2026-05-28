@@ -1,0 +1,62 @@
+4:	Az eldönthetőség determinisztikus és nemdeterminisztikus formái, eldönthetetlen problémák. 
+Algoritmusok idő és tárigényének definíciója. A P és az NP bonyolultsági osztályok. 
+Hatékony visszavezetés, teljesség, NP-teljes problémák.
+
+Eldönthetetlenség Determinisztikus formája:
+	- Egy turing gép mindig megáll és eldönti, hogy benne van e a keresett szó a nyelvben vagy sem PL:HORNSAT P osztaly (minden klozban max 1 pozitiv literal)
+Eldönthetetlenség Nem det formája:
+	- gép párhuzamosantöbb ágon fut egyszerre
+	- ha bármelyik ág elfogad akkor igaz, ha minden ág elutasít akkor nem PL:SAT (NP)
+	
+Elndönthetetlen problémák
+	-vannak problemak amit egyik turing gep se tud eldonteni 
+	-megtudja e mondani megall-e bizonyos inputa a turing gép
+	
+Időigény:
+	-Bemenet méretétől függ, Leggyakrabban Ordo-val jelolik pl: O(n)
+	- Big O notattion. Ez a legrosszabb esetet nézi pl egy for ciklus O(n) mivel a legrosszabb eset az, hogy minden inputon vegig kell mennie ahon n az input
+	
+	Szamitas:
+		-Ciklus: megnezzuk, hogy a ciklusmagot osszeszorozzuk azzal ahanyszor lefuthat
+		-Szekvencialis: egymas utani kodblokkot idoigenyet osszeadjuk
+		-T.lenght-re mindig jo becsles az O(n)
+		-T[i]-re pedig O(n^2)
+		
+	Hierarchia peldakkal:
+		-Konstans ido: O(1) : pl egy lista elso elemenek lekerdezese
+		-Logaritmikus ido:O(log(n)): Binaris kereses rendezett listaban, minden lepesnel megfelezi a tartomanyt
+		-Linearis ido: O(n)
+		-Linearis-logaritmikus ido: O(n*log(n))
+		-Negyzetes ido: O(n^2) Bubble-sortnal minden elemhez tobbszorosen kell vegigmenni a a listan -> ket egymasba agazott ciklus aminek ugye O(n) az ideje
+		-Polinomialis ido: O(n^k) graf szelessegi, minden csucsot es elet legfeljebb egyszer latogat meg -> keresese aranyosan novekszik a melyseggel
+		-Exponencialis ido: O(2^n) utazougynok problema, minden utat ki kell probalni, ez exponencialisan no a a varosok(csucsok) szamaval
+		-Faktorialis ido: O(n!), Teljes permutacio vizsgalo algoritmusok: minden lehetseges kombinaciot ki kell probalni 
+
+Tárigény:
+	-Bemenet meretetol fugg, ez is Ordo-val szokas jelolni
+	-csak az inputot olvassuk, outputot nem 
+	
+	Hierachia peldakkal:
+	-O(1): valtozo eltarolasa
+	-O(n): pl tomb tarolasa
+	-O(log n): pl: binaris kereses rekurziv verem
+	
+	
+P osztaly: Polinomialis idoben megolhato determinisztikusan
+PL: HORNSAT, 2SAT
+
+NP osztaly: Polinomialis idoben megoldhato nem determinisztikusan
+PL:sat, hamilton utani
+
+P=NP? nyilt kerdes sokan ugy gondoljak, hogy a ketto nem ugyanaz de nincs bizonyitva
+pl sat-rol tudjuk, hogy NP teljes viszont azt nem, hogy P-be tartozik-e, nincs bizonyitva
+
+PSPACE Polinomialis tarigeny -> QBF (kvantoros sat)
+
+Hatekony visszavezetes: 
+-Ha A visszavezetheto B-re ha B legalabb olyan nehez, mint A
+-A-t atalakitjuk B problemava, B-vel megoldjuk, majd utana visszaalakitjuk 
+
+Teljesseg: Np teljes azt jelenti, hogy minden np problema visszavezetheto ra -> legnehezebb NP problemak :SAT, hamilton utana
+Hierarchia P < NP < PSPACE
+

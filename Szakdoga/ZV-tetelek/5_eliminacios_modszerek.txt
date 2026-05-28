@@ -1,0 +1,41 @@
+matrix egyenletrenszer ax=b felirt alakban
+mikor van megoldasa egy egyenlet rendszernek?
+-Ha a det =/= 0 akkor 1 megoldasa van, ha det = 0 es b-re illeszkedik akkor vegetelen van ha det = 0 es nem illeszkedik b-re akkor nincs
+
+eliminacios modszerek:
+	Direkt : pontos megoldast adnak (gauss, LU, Cholesky, QR felbontas)
+	Iteracios : kozelito megoldast adnak (Guass-seidel, jacobi)
+	
+kis matrixokra direkt modszerek
+nagy matrixokra: iteracios modszert szokas alkalmazni
+nyilvan ha pontos megoldast akarunk adni nagy matrix-ra akkor direkt megoldasok egyiket kell hasznalni ami nehezebb de nem lehetetlen
+
+
+Cholesky(LL^t) felbontas:
+	-ha egy matrix pozitiv definit akkor letezik ra LLt felbontas
+				-pozitiv definit: - szimmetrikus (átlóra tükrözve szimmetrikus) sokszor ranezesre megmondhato
+						  - minden fominor pozitiv (3x3 matrixnal pl, bal felso 1x1, bal felso 2x2, es az egesz matrix determinansa pozitiv)
+	-olyan matrixot szeretnenk kapni ami felbonthato also es felso triangularis matrixra (egymas transzponantljai)
+	-A = L x Lt
+	-elvegezzuk a matrix szorzast a jobb oldalon
+	-ezutan behelyettesitjuk a bal oldali ertekeket a jobb oldali matrixba
+	-kiszamoljuk a kapott egyenletet 
+	-visszahelyettesitve megkapjuk a felbontast
+	
+LU felbontas 
+	-akkor adhato meg ha a matrix nem szingularis (determinansa nem 0)
+	-A = L x U alakban felirhato
+	-Gauss elimnacioval megkapjuk U-t
+	-eliminacio szorzokat feljegyezve kapjuk meg L-t
+	-megoldjuk Ly=b fentrol lefele
+	-megoldjuk Ux = y lentrol felfele
+
+QR felbontas
+	- A = Q x R 
+	- Q egy ortogonalis matrix(oszlopai merolegesek egymásra es egyenlo hosszuak) Q^t=Q^-1 (Inverze = transzponanltja) ((Q^t x Q) = egysegmatrix)
+	- R felso haromszog matrix
+	- Q transzponanltjaval megszorozzuk b-t -> QtB
+	- Utan Rx = QtB -> hatrahelyettesitessel megoldjuk x-et
+
+
+Gyorsasag QR < LU < Choleksy 
