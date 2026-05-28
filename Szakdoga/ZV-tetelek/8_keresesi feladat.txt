@@ -1,0 +1,73 @@
+8.	Keresési feladat: feladatreprezentáció, vak keresés, informált keresés, heurisztikák. 
+	Kétszemélyes zeró összegű játékok: miminax, alfa-béta eljárás. Korlátozás kielégítési feladat. 
+	
+Keresési feladat:
+	Agens:
+		-Egyszeru agens:-csak cselekszik (roomba porszivo)
+		-Racionalis agens:-tudasahoz merten helyesen cselekszik (sakk AI)
+			
+	-Amikor egy ágens el akar jutni egy kezdőállapotból egy célállapotba
+	-Súlyozott gráffal jelöljuk
+		-csucsok - lehetseges allapotok
+		-elek - lehetseges cselekvesek
+		-sulyok - cselekvesek koltsege
+		-kezdo es cel allapot --> Ez a gráf az állapottér
+			-Példa labirintus
+	Állapotmenet: Pl labirintusba megmondja, hogy eppen milyen lehetseges lepeseim vannak
+	
+	
+Vak keresés:
+	-Az agens semmit nem tud a celallapotrol (labirintus bekotott szemmel)
+	Kettő féle megközelítés:
+		-Fakeresés Bejarjuk a fat (vegtelen ciklus ha kor van)
+		-Gráfkeresés (ugyanat mint a fakereses csak taroljuk a bejart csucsokat -> nem lesz vegtelen ciklus)
+		
+	Vak kereső algoritmusok:
+		-Szelessegi kereses (FIFO szintenkent keres, verembe pakolunk) - Optimalis de lassu
+		-Melysegi kereses (LIFO melyen halad eloszor, sorba pakolunk verem helyett) - Gyors de nem optimalis
+		-Iterativan melyulo kereses ketto kombinacioja - Legjobb vak kereso 
+		-Egyenletes koltsegu kereses (legolcsobb utat keresi) - Koltseg alapu
+	
+Informált keresés 
+	-Az agéns-nek van egy iránytűje, nem tudja hol a kijárat csak nagyjából (iránytű a heurisztika, mint google mapnal egy legvonalbeli tavolsag)
+	-Két függvény h(n) és g(n)
+			-h(n) heurisztika (becsles)
+			-g(n) tenyleges koltseg a kezdoallapottol
+		-2 fő informalt kereső algoritmus:
+			-Mohó: -csak a becslást nézi nem törődik a megtett uttal (Gyors de nem optimalis)
+			-A*: Figyelembe veszi azt is ,hogy mennyi a becsles es a megtett ut -> (Lassu de optimalis)
+			
+	Heurisztikak:
+		-Ugye becslest ad (elfogadhatonak hivjuk ha nem becsuli felul a valodi tavolsagot, mindig alabecsul -> igy talalja meg a legrovidebb utat)
+			
+Kétszemélyes zéró összegű játekok:
+	-Max Min felváltva lépnek (max kezd) PL sakk
+	-Amint Max max nyer Min veszit (vagy forditva) ez a lenyege
+	-Hasznosságfüggvény: minden végállapothoz rendel egy értéket: 1, -1, 0
+	
+	Minmax algoritmus:
+			-Megnezi az osszes lehetseges kimenelt, mindket oldal-e szerint dont
+			-Min minden szinten a legkisebbet valasztja
+			-Max pedig minden max szinten a legnagyobbat valasztja
+			-Lassu sakknal annyi lehetseges lepes van, hogy lehetetlen vegigszamolni
+			
+	Alfa-beta vágás:
+		-Alfa 	Max eddig legnagyobb talalat ertek kezdetben -vegtelen
+		-Beta   Min eddig legkisebb talalt erteke kezdetben +vegtelen
+		-Alfa vagas -> MIN levagja az agat, mert MAX talalt jobb agat
+		-Beta vagas -> MAX levagja az agat, mert MIN talalt jobb agat
+			-Alfa beta ugyanolyan optimalis de gyorsabb, mint a minmax algo
+		
+		
+	Korlatozas kielegitesi feladat:
+		-Nem a legjobb utat keressuk hanem azt ami minden feltetelt kielegit
+		-Szomszedos orszagok peldaja:
+			-Szomszedos orszagok szinei a terkepen ne legyen azonos szinuek
+				-valtozok: orszagok
+				-lehetseges ertekek: szinek
+				-korlatozasok 
+		-Ket fele megoldas:
+			-inkrementalis kereses: lepesrol lepesre toltjuk ki a valtozokat, felteteleket elleorizve - Lassu de biztos megoldast ad
+			-lokalis kereses: elkezdjuk a kezdoallapottol majd ut kozben javitjuk ugy, hogy mindennek megfeleljen - Gyors de nem mindig ad megoldast
+	
+	

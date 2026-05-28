@@ -1,0 +1,28 @@
+17.	Algoritmusok vezérlési szerkezetei és megvalósításuk C programozási nyelven. A szekvenciális, iterációs, elágazásos, és az eljárás vezérlés.
+
+C-ben 4 vezérlési szerkezetről beszélhetünk
+	-Szekvenciális:
+		-Utasítások egymás után hajtódnak végre, ezert imperativ a C, mint egy recept
+		-Minden utasitas egyszer hajtodik vegre
+		-vegrehajtasi sorrend sorok szerint van
+		Például (deklaralunk 2 valtozok, majd osszeadjuk oket es kiiratjuk)
+	Iterációs:
+		-Lehetove teszi, hogy egy kodreszlet tobbszor is lefusson
+		-while - addig fut amig teljesul a feltetel
+			-break: megall a ciklus es folytatodik a kod tobbi resze, figyelmen kivul hagyodik a ciklus tobbi rezse
+			-countinue: ciklue tovabb lep, kihagyja a maradek reszt de ujraindul
+		-do-while - eloszor vegrehajt egy utasitast majd utana ellonoriz
+		-for - ciklus meghatarozhatjuk hanyszor fusson le, ezeket egymasba is agyazhatjuk
+		-foreach - egy kollekcio minden elemen vegighalad, ezt nem tartalmazza a C de tudjuk for ciklussal szimulalni
+		-while-if (hurok) - while-on belul van egy if-unk ami ha teljesul kilepunk a while-bol
+		
+	Elagazasos:
+		-if - egyszeru, feltetel teljesult var
+		-if-else - ha nem teljesul if akkor az else ag igen
+		-switch - esetkivalasztos (atlathatobb, mint sok sok if else egybeagyazva)
+		
+	Eljarasvezerles
+		-fuggveny- visszaad ertekekt
+		-eljaras - (void) nem ad vissza erteket
+		
+		
