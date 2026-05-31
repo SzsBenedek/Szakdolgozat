@@ -1,0 +1,56 @@
+LP alapfeladat, példa, szimplex algoritmus, az LP geometriája, 
+generálóelem választási szabályok, kétfázisú szimplex módszer, 
+speciális esetek (ciklizáció-degeneráció, nem korlátos feladat, nincs lehetséges megoldás)
+
+
+LP egy optimalizalasi feladat
+	-Vannak egy celfuggvenyek (mit akarunk max vagy minimalizalni, PL: hogy mibol mennyi fegyvert gyartsunk egy fegyveruzemben)
+	-Vannak feltetelek/korlatok (mennyi nyersanyagunk, munkasunk van stb)
+	-Valtozok (mennyi pisztolyt/geppuskat gyartsunk)
+	-Geometriailag az optimalis megoldas mindig egy csucsban van
+	
+Szimplex algoritmus 
+	-csucsban van az optimalis megoldas, ezt hasznalja ki a Szimplex
+	-Szótár alakkal dolgozik az algoritmus
+			-Bal oldal Bázisváltozók (slack, ezeket behozzuk)
+			-Jobb oldal Nembázisváltozók
+	-1.lépés: belépő változó kiválasztása: legnagyobb egyutthato kivalsztasa pl x1
+	-2.lépés: kilépő változó : legkisebb hanyados konstans/egyutthato
+	-3.lepes: kifejezzuk a belepo valtozot a kilepo valtozo fuggvenyebol -> ez egy iteracio (egy pivot lepes)
+	-4.lépés ezt addig csinaljuk amig nem lesz minden egyutthato negativ a celfuggvenyben (minimalizalasnal pozitiv)
+	
+	-degenralt-nak nevezunk egy lepest ha egy celfuggveny erteke valtozatlan egy pivot lepes utan
+	-ciklizaciorol akkor beszelunk ha tobb degenrativ lepes van egymas utan -> elerunk egy korabbi szotarar
+	
+	Megoldás:generálóelem választás
+		3.ilyen szabály van: 
+				-klasszikus: -Belépő: legnagyobb pozitiv egyutthatot valasszuk kifejezzuk
+							 -Kilépő: legkisebb hanyados konstans/egyutthato
+				-bland: 
+							-Belépő: legkisebb index pozitiv valtozot valassza
+							-Kilépő: ugyanaz, mint klasszikusnal
+							
+				legnagyobb novekmeny:
+							-Belépő: minden lehetseges belepo valtozora csinalunk hanyados tesztet, 
+									 ezeket ossze szorozzuk az egyutthatokkal, amelyik belepo adja a legnagyobb ezaltal kapott novekmenyt az lesz a belepo
+							-Kilépő: legkisebb hanyados konstans/egyutthato
+							
+				Klasszikus:normal esetben
+				bland: ciklizaciot akarjuk elkerulni
+				legnagyobb novekmeny: leggyorsabb, lepesek lassabbak de keves iteracio
+	Ketfazisu:
+			-Akkor kell ha az origo nem lehetseges megoldas
+					-x1,x2 > 5 0 =/=5
+					-x1,x2 = 5 0 =/=5
+			-mivel a szimplex origiobol indul(nembazis valtozok erteke 0)
+			-Elso fazis:
+				-keresunk egy olyan pontot ami teljesit minden feltetelt
+			Masodik fazis:
+				-szimplexxel haladunk tovabb onnan -> optimum fele
+				
+	LP alaptetele
+		-3 kimenetel lehetseges:
+				-van optimalis megoldas (mindig csucspontban van)
+				-nem korlatos a feladat -> vegtelensegig no az celfuggveny (nincs kilépő változó)
+				-nincs lehetseges megoldas -> a feltetelek ellentmondanak egymasnak
+			

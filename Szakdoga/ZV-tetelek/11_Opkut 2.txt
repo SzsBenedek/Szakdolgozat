@@ -1,0 +1,38 @@
+Egészértékű feladat, B&B, hátizsák, hozzárendelési feladat, magyar módszer
+
+Egészértékű feladat
+Egyes feladatokra ki kell kotnunk mit bizonyos felteleke, hogy egeszertekiek legyenek a valtozok
+pl egy gyárban sem tudunk fél katonát gyártani
+	-viszont egyszeruen lekerekitve:
+			-lehet nem teljesiti a felteteleket
+			-lehet nem lesz optimalis
+				-Megoldás: B&B (Branch and bound)
+				
+Branch and bounnd
+	-pl ha egy LP megoldása 3.7 ami törtszám 
+		-elágazást csinálunk vagy 3 vagy 4-re kerekitjuk
+		-nem kell miden agat vegig vizsgalni
+		-ha az egyik ag rosszabb, mint az eddigi legjobb egesz megoldas levagjuk
+		-megalunk ha minden agban egesz megoldast talalunk, levagjuk a maradek rosszat
+		
+Hátizsák probléma:
+		-van egy hatáizsák ami pl 10kg-ot bír
+		-vannak tárgyak amiket bele kell rakni, mindegyiknek van sulya es erteke
+		-a feladat az, hogy a legtobb ertek legyen a taskaban es a limit alatt legyen
+		-0-1 hátizsák feladat, mindenbol vagy 0-at vagy 1-et viszunk, altalanos hatizsak feladat, akarmennyi akarmibol
+		Megoldas: 
+			-Moho, megnezzuk melyik ertek er ugymond a legtobbet sulyhoz merten, nem mindig az optimalis megoldast talalja
+			-B & B
+	
+Hozzarendelesi feladat:
+		-vannak munkasok es feladatok 
+		-mindenki mas osszegert oldja meg a feladatot
+		-minden munkas 1 feladatot kap
+		-rendeljunk minden munkashoz egy feladatot -> ugy hogy minimalizaljuk a koltseget
+			-mohobb megoldas: Minden feladatra a legolcsobb munkast valasszuk, ha lehet 
+	-> magyar modszer
+	
+Magyar modszer:
+		-minden sorbol kivonjuk a sor minimumat -> 0ak
+		-minden oszlopbol kivonjuk az oszlop minimumat -> 0ak
+		-addig csinaljuk meg minden oszlopban es sorban pontosan egy darab 0 lesz

@@ -1,0 +1,37 @@
+Objektum orientált paradigma és annak megvalósítása a JAVA és C++ nyelvekben.
+Az absztrakt adattípus, az osztály. Az egységbe zárás, az információ elrejtés, az
+öröklődés, az újrafelhasználás és a polimorfizmus. A polimorfizmus feloldásának
+módszere.
+
+OOP alapelvek:
+	-Oroklodes(le tudok szarmaztatni egy osztalyt ami viszi tovabb a tulajdonsagait) PL jarmu -> auto osztaly
+		-c++ sajatossaga: gyemant oroklodes
+	-Polimorfizmus (tobbalakusag): 
+					-tobb fuggvenynek is lehet ugyanaz a neve
+					-2 fele modon letezik:
+							-forditasideju (kulonbozo parameterek)
+							-futasideju (leszarmaztatott osztalybol irjuk felul, parameterek nem valtoznak)
+	-Egysegbezaras (az adatokat metodusokat egy logikai egysegbe zarjuk (osztaly))
+	-Absztratkcio (mi mondjuk meg mit lathat es nem lathat a user)
+	
+Absztrakt adattipus
+	-absztrakt osztaly azt jelenti, hogy nem lehet belole objektumot csinalni csak leszarmaztatni
+	-Pl.: Allat osztaly es hangot_ad() fuggveny, allat nincs ,,altalanos"  allat hang
+		  Viszont kutyanak van, ezert csak leszarmaztathato az allat osztaly es a fuggveny a leszarmazott osztalyban van csak megvalostiva
+	-c++ nincs abstract kulcsszo, ezt egy pure virtual fuggvennyel lehet megvalositani
+	
+Kulonbseg Java es c++ kozott
+	-Oroklodes: Java egyszeres de tobb interfeszt is implementalhat , C++ gyemant
+		(interfesz = blueprint(metodusok))
+	-Memoria: Java garbage collector, manualis
+	-Interfesz: Java van, C++ nincs
+	-Polimorfizmus: Java automata, C++ virtual kulcsszo
+	-Absztrakt: Java abstract kulcsszo, C++ pure virtual (virtual a fuggveny ele es =0)
+	-Futas: Java JVM-en fut, C++ processzoron fut -> gyorsabb
+
+Informacio elrejtes:
+	-Egysegbezaras resze megmondja ki ferhet hozza egy adathoz
+	-private: - csak osztalyon belul erheto el
+	-public: mindenki szamara elerheto
+	-protected csak osztalyon belul es leszarmaztatott osztalyokbol erheto el
+	-getterek setterek itt lesznek hasznosak pl private adatoknal
