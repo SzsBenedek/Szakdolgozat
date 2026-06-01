@@ -35,3 +35,15 @@ Informacio elrejtes:
 	-public: mindenki szamara elerheto
 	-protected csak osztalyon belul es leszarmaztatott osztalyokbol erheto el
 	-getterek setterek itt lesznek hasznosak pl private adatoknal
+
+
+Ujrafelhasznalas:
+	-orokolt osztalyokban mar nem kell csomo kodot megirni, mert a szulotol orokli (pl meotdusok, valtozok)
+		-ebben pl segit a super kulcsszo is a konstruktorban
+		
+Polimorfizmus feloldasa:
+	-forditasideju (overloading)
+		-mindket nyelvben automata
+	-futasideju (overridding)
+		-C++-ban virtual kulcsszora van szuksegunk
+			-ha ezt nem tesszuk meg akkor csak a szulo osztaly fuggvenye lesz meghivva
