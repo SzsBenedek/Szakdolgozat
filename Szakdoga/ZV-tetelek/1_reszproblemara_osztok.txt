@@ -1,0 +1,76 @@
+Részproblémára bontó algoritmusok (mohó, oszd-meg-és-uralkodj, dinamikus programozás),
+ rendező algoritmusok, gráfalgoritmusok (szélességi- és mélységi keresés, minimális feszítőfák, legrövidebb utak)
+ 
+Részproblémára bontó algoritmusok: Egy nagyobb problémnát kisebbekre bont, hogy konnyebb legyen megoldani
+
+Moho algoritmusok:
+	-Nem gondolkozik előre, mindig a legjobbnak látszót választja
+	-Töredékes hátizsák probléma (érték/súly)
+	-PL 26 forint visszaadasa -> 20,5,1
+	-Nem mindig optimális (0-1 hátizsáknál	)
+	Időigény általában O(n*logn) - Rendezes miatt
+	Példák mohóra: Töredékes hátizsák, Dijkstra, Kruskal, Prim
+	
+Divide and conquer
+	3 lépés:
+		Felosztás: kisebb disztjunkt részekre bontjuk
+		-Uralkodás: ha elég kicsik a részfeladatok megoldjuk őket
+		-Összevonás: részeredményeket összevonjuk
+	2 féle megavalósítás:	
+		-Rekurzív (szebb es egyszerubb de tobb memoriat eszik stack-en (verem))
+		-Iterativ (nehezebben olvashato de memoriahatekony)
+	Példák:
+		-Összefésülő rendezés O(nlogn)
+		-Bináris keresés O(logn)
+		
+Dinamikus programozás:
+	-Eltárolja az eddigi eredményeket
+	-Hasznos pl fibonacci számoknál(minden szám az előtte levő 2 szám összege)
+	-Minden értéket csak egyszer számolunk ki
+	-PL.: Fibonacci O(n)  -> O(n*m)
+	
+Rendező algoritmusok
+	Alapfogalmak:
+		-stabil rendezés: ha két azonos értékű elem van megőrzi a sorrendet
+		-Helyben végzett rendezés (Pl.: egy tömbbön végzett rendezés)
+	
+	Összefésülő rendezés:
+		-szetbontja kisebb tombokre
+		-Mindig a két tömb első elemeit veti össze 
+		-O(n*logn)
+		-Stabil, nem helyben rendez
+	Gyorsrendezés:
+		-valaszt egy pivot elemet (altalaban random)
+		-nala kisebbeket balra teszi, nagyobbakat jobbra
+		-O(n^2)
+		-Nem stabil de helyben vegez rendezest
+	Beszuro rendezes:
+		-Balrol jobbra megy es minden elemet beszur a helyere
+		-Stabil es helyben vegzi
+		-Legrosszabb eset O(n^2)
+	Kupac rendezés:
+		-egy max kupacba rendezzuk a tombbot 
+		-mindig kivesszuk a legnagyobbat es berakjuk a tombbe
+		-rendezzuk a kupacot
+		-addig csinaljuk ezt mig a kupac ures lesz
+		O (n*logn)
+		-Nem stabil de helyben vegez rendezest
+		
+Minimális feszítőfák:
+	-Kruskal: elbol indul,mindig a legrövidebb utat válsztja ha az nem alkot kört, halmazokat tárol
+	-Prim: csúcsból indul, legkisebb elt valasztja ami csucsot ad (igy nem kell nezni, hogy van e kor)
+
+Legrövidebb út:
+	-Dijkstra: Mindig azt a csucsot valasztjuk ami a legkozelebb van, majd eltaroljuk az elso csucs -> amig nem talalunk meg minden csucsot
+
+Szélességi keresés:
+	-Sorral dolgozik
+	-Szintenkent halad FIFO
+	-Fekete, szurke, feher	
+	-Eltarolja minden csucs eleresi tavolsagat
+
+Mélységi keresés:
+	-Veremmel dolgozik
+	-Fekete, szurke, feher
+	-Gyökérből teljesen lemegy az aljáig
+	-van egy discovery es egy finish time - (szürke, fekete)

@@ -1,0 +1,54 @@
+Elemi adatszerkezetek, bináris keresőfák, hasító táblázatok, gráfok és fák
+számítógépes reprezentációja.
+
+Elemi adatszerkezetek: 
+	-Verem (Stack) LIFO -> 4,5,7 -> 7 ((Pringles henger))
+			-Push (listába tétel)
+			-Pop (utolsó elem kivétele)
+			-Peek (Tető elem megnézése)
+			-Minden muvelet O(1)
+			-Pl.: Mélységi keresés
+
+	-Sor (Queue) FIFO -> 4,5,7 -> 4 ((Bolti sor))
+			-Sorba (elem sor vegere helyezese)
+			-Sorbol (elem kivetele sor elejerol)
+			-Fej és- Vég (két mutató, sor eleje és vége)
+			-Minden művelet O(1)
+			-Pl.: szélességi keresés
+			
+	-Láncolt lista (Linked list)
+			-Az elemek egymasra mutatnak 
+				-Egyszeres lancolas: csak elore mutatnak az elemek
+				-Ketszeres lancolas: elore es hatra is mutatnak az elemek
+				-Ciklikus: az utolso az elsore mutat
+			-Fej pointer (elso elemre mutat -> ha NILL akkor ures a lista)
+			-Konnyebb beszurni, mint egy tombbe (csak el kell tolni a mutatokat)
+			-Kereses lassu O(n), Tombnel indexelessel O(1)
+			
+	-Halmaz
+			-Matematikaval ellentetben ez dinamikus (futas kozben valtozhat)
+			-Ket fajta muvelet:
+					-Lekerdezo (csak olvasas)
+						-kereses, min, max, kovetkezo, elozo
+					-Modosito:
+						-Torles 
+						-Beszuras
+			-Megvalosithato (tombbel, lancolt listaval, bin keresofaval, hasitotablaval)
+			
+Binaris keresofa:
+	-Fentrol lefele kell elkepzelni
+	-Minden csucsnak max 2 gyereke van
+	-Balra kisebb jobbra nagyobb ertek
+	-Muveletek:
+		-Kereses O(h) (fa magassaga)
+		-Min/Max O(h)
+		-Beszuras o(h)
+		-Torles O(h)
+				-Ha nincs gyereke egyszeru
+				-Ha 1 gyerek van akkor azt osszekotjuk a nagyszulovel
+				-Ha 2 van akkor bal reszfa legnagyobb elemet berakjuk oda
+		-Inorder bejaras: 
+			-bal reszfa -> gyoker -> jobb reszfa ==> novekvo sorrendbe rendezi a fat
+
+Kiegyensulyozott(piros fekete) fa:
+	-

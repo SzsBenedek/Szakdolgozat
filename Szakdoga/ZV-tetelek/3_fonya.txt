@@ -1,0 +1,52 @@
+Környezetfüggetlen nyelvek és reguláris nyelvek definíciója. Véges automaták és
+reguláris kifejezések. Pumpáló lemmák. Zártsági tulajdonságok műveletekre.
+
+Környezetfüggetlen nyelvek:
+	PL.: S -> aSb | ε
+		aSb -> aaSbb -> aaεbb -> aabb
+	Részei:
+		-N, Σ, P, S
+		N: Nem terminalis szimbolumok veges halmaza, nem maradhat a vegen pl.: S, BAL oldalt csak 1 nemterminalis lehet
+		Σ: terminalisok szimbolumok veges halmaza,mar nem cserelhetok semmire, vegen csak ezek maradhatnak pl:a,b
+		P: Szabályok pl.: {S-> aSb | S-> ε }
+		S: Kezdoszimbolum, altalaban S de lehet mas is 
+	Mire jó:
+		-Szintaxist ir le (pl zarojelek egyensulya) pl { utan mindig kell egy }
+		-Forditoprogamok hasznaljak, mielott meg gepi kodra forditanank ellenoriz
+	Verem automata ismeri fel (mint egy veges automata csak van verme)
+		.pl: ha latok egy a-t akkor berakom a verembe, ha latok egy b-t akkor kiveszem -> ha a vegen ures akkor ugyanannyi a es b is van (a^n a^b)
+		-ez felismeri a regualis nyelveket is 
+		
+Reguláris nyelvek:
+		-Olyan nyelvek amiket véges automataval fel lehet ismerni
+		-Elemei ugyanazok mint a CFL-nek 
+		-Szabalyai:
+			jobb oldalt csak 1 terminalis VAGY 1 terminalis es nemterminalis
+		-3 alap muvelet:
+			-Osszefuzes: ab -> a utana b
+			-Unio: a|b -> a vagy b-t
+			-Kleene(klíni) csillag: (ab)* -> akarmennyi ab egymas utan, 0 is lehet
+
+Véges automata(Det):
+	-Regualis nyelveket ismeri fel
+	-Beolvas egy szót és megmondja eleme-e a nyelvnek vagy sem
+	-5 eleme van:
+		-Q: állapotok halmaza pl.: Q0,Q1
+		-Σ: bementei szimbolumok pl.: a
+		-δ: átmenetfüggvény (melyik állapot melyikbe megy)
+		-q0: kezdőállapot (kettős kör)
+		-F: elfogadó állapot
+	Pl: ->q0 --a--> q1 --b--> q0
+	-ha a végén elfogadó állapotban vagyunk akkor igen ha nem akkor nem része a nyelvnek
+	
+Nem determinisztikus véges automata:
+	-Egy állapotból több állapotba is vihet ugyanaz az input
+	-ha az egyik elfogado akkor odalep
+	-ha egyik sem akkor nem eleme
+	-minden lehetseges utat parhuzamosan kovetunk
+	-átkovertálható det veges automataval
+	
+Epszilon automata:
+	-ε is lehet két állapot közötti ugrás
+	
+	-atkonvertalhato nemdet veges automatava

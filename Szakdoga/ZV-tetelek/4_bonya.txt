@@ -48,6 +48,10 @@ PL: HORNSAT, 2SAT
 NP osztaly: Polinomialis idoben megoldhato nem determinisztikusan
 PL:sat, hamilton utani
 
+NP teljes:
+	-minden np problema visszavezetheto ra
+	-o is benne van az NP osztalyban
+
 P=NP? nyilt kerdes sokan ugy gondoljak, hogy a ketto nem ugyanaz de nincs bizonyitva
 pl sat-rol tudjuk, hogy NP teljes viszont azt nem, hogy P-be tartozik-e, nincs bizonyitva
 

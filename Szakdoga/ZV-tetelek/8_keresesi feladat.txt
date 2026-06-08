@@ -23,8 +23,8 @@ Vak keresés:
 		-Gráfkeresés (ugyanat mint a fakereses csak taroljuk a bejart csucsokat -> nem lesz vegtelen ciklus)
 		
 	Vak kereső algoritmusok:
-		-Szelessegi kereses (FIFO szintenkent keres, verembe pakolunk) - Optimalis de lassu
-		-Melysegi kereses (LIFO melyen halad eloszor, sorba pakolunk verem helyett) - Gyors de nem optimalis
+		-Szelessegi kereses (FIFO szintenkent keres, sorba pakolunk) - Optimalis de lassu
+		-Melysegi kereses (LIFO melyen halad eloszor, verembe pakolunk) - Gyors de nem optimalis
 		-Iterativan melyulo kereses ketto kombinacioja - Legjobb vak kereso 
 		-Egyenletes koltsegu kereses (legolcsobb utat keresi) - Koltseg alapu
 	
