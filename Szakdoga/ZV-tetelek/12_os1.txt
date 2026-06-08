@@ -1,0 +1,7 @@
+Processzusok, szálak/fonalak, processzus létrehozása/befejezése, processzusok
+állapotai, processzus leírása. Ütemezési stratégiák és algoritmusok kötegelt, interaktív
+és valós idejű rendszereknél, ütemezési algoritmusok céljai. Kontextus-csere.
+
+Program: egy statikus kodfile a lemezen (nem csinal semit magatol)
+Processzus: egy futo program,  aktiv, memoriaban van, cpu-t hasznal
+

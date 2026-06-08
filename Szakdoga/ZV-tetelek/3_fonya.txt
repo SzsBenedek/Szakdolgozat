@@ -48,5 +48,13 @@ Nem determinisztikus véges automata:
 	
 Epszilon automata:
 	-ε is lehet két állapot közötti ugrás
-	
 	-atkonvertalhato nemdet veges automatava
+	
+Pumpalo lemma:
+	-arra valo, hogy bebizonyitsuk egy nyelvrol, hogy NEM regularis
+	-ha egy nyelv regularis fel tudjuk bontani 3 reszre:
+									-w1 eleje
+									-w2 ez a resz ismetlodik
+									-w3 vege
+	-ha ilyet nem tudunk adni akkor nem regularis a nyelv
+			
