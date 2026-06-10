@@ -65,3 +65,7 @@ Funkcionális függőség:
 	2NF: Meg kell felelnie 1NF szabalyainak, Minden adat egyertelmuen kell kapcsolodjon az elsodleges kulcshoz -> külön táblákba szervezés
 	3NF: 2NF szabalyainak meg kell feleljen, tranzitiv fuggosegeket keruli ki, minden attributumnak kozvetlenul kell fuggenie a kulcstol
 	
+
+Konyv (szerzo, konyvszam, cim)
+Olvaso (olvasoszam, nev, lakcim)
+Kolcsonzes (konyvtarszam, olvasoszam, kivetel, visszahozas)

@@ -1,0 +1,51 @@
+Az SQL adatbázisnyelv: Az adatdefiníciós nyelv (DDL) és az adatmanipulációs
+nyelv (DML). Relációsémák definiálása, megszorítások típusai és létrehozásuk.
+Adatmanipulációs lehetőségek és lekérdezések.
+
+Adattipusok:VARCHAR(n), CHAR(n), INT, FLOAT, BOOLEAN, DATE, BLOB -> kepeke tarolasara (binaris adat)
+Oszlop megszorítások:
+	-PRIMARY KEY (elsodleges kulcs, nem lehet nulla)
+	-NOT NULL (nem lehet ures)
+	-UNIQUE (egyedi ertek, lehet null)
+	-DEFAULT (alapertelmezett ertek, ha nem kap mast)
+	-CHECK (pl.: ar csak pozitiv lehet)
+Tabla megszoritasok:
+	-PRIMARY KEY (osszetett kulcsnal)
+	-FOREIGN KEY … REFERENCES...
+
+Tábla létrehozás:
+CREATE TABLE Konyv(
+konyvszam INT PRIMARY KEY,
+nev VARCHAR(50),
+cím VARCHAR(50)
+);
+CREATE TABLE olvaso(
+olvasoszam INT PRIMARY KEY,
+nev VARCHAR(50),
+LAKCIM VARCHAR(200)
+);
+CREATE TABLE kolcsones(
+konyvszam INT,
+olvasoszam INT,
+kivetel DATE,
+visszahozas DATE,
+PRIMARY KEY (konyvszam, olvasoszam),
+FOREIGN KEY (konyvszam) REFERENCES konyv(konyvszam),
+FOREIGN KEY (olvasoszam) REFERENCES olvaso(olvasoszam)
+);
+
+Beszúrás táblába:
+INSERT INTO konyv(konyszam, szerzo, cím) VALUES (1, Kiss Ferenc, Adatbázisok);
+
+Adatmódosítás:
+UPDATE konyv SET szerzo = 'Kiss Béla' WHERE konyszam = 1;
+
+Adattörlés:
+DELETE FROM konyv WHERE konyszam = 1;
+
+LEFT JOIN:
+Bal oldali összekapcsolás – visszaadja a bal tábla összes sorát, még akkor is ha a jobb táblában nincs hozzá tartozó adat. Hiányzó értékek helyén NULL szerepel.
+SELECT * FROM konyv LEFT JOIN kolcsones ON konyv.konyvszam = kolcsones.konyvszam;
+
+Mikor használjuk?
+Ha a bal tábla összes sorát szeretnénk látni, függetlenül attól hogy van-e hozzájuk kapcsolódó adat a jobb táblában.

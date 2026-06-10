@@ -4,4 +4,72 @@ Processzusok, szálak/fonalak, processzus létrehozása/befejezése, processzuso
 
 Program: egy statikus kodfile a lemezen (nem csinal semit magatol)
 Processzus: egy futo program,  aktiv, memoriaban van, cpu-t hasznal
+		Memoriat foglal le a kotvetkezoknek:
+					-Heap
+					-Stack
+					-Adatok(valtozok)
+					-Kod
+Szál: pl Gyár a processz, Munkások pedig a szálak
+	-Sajat stack-je van de osztoz a memorian tobbi szallal
 
+Processzus létrehozása:
+	-PID hozzarendelese (egyedi azonosito)
+	-Memoria lefoglalasa
+	-PCB letrehozasa
+	-Program betoltese a memoriaba
+	-READY allapotba helyezes
+	
+Processzus befejezése:
+	-4 kimenetel: Normalis, hiba miatti, szulo kilep, szulo megoli
+	-Lepesei:
+		-Memoria felszabaditasa
+		-PCB torlese
+		-Szulo processz ertesitese
+
+PCB:
+	-tarolja a processz adatait, mint egy szemelyigazolvanyt
+		-PID (Process ID)
+		-Allapot (NEW, RUNNING, READY)
+		-Program counter (pontos hely, hogy hol tart a kodban)
+		-Regiszterek (aktuális értékét)
+		-Memóriatérkép (Hol tart a heap es a stack)
+		-Megnyitott fajlok
+		-Prioritas
+		
+Mikor hasznaljuk?
+	-Letrehozaskor
+	-Kotextuscsere
+	-Befejezeskor torlese
+	
+Processzus állapotai:
+	-NEW (létrehozásnál)
+	-READY (létrehozás kész vár a cpu-ra)
+	-RUNNING (Utemezo kivalasztotta)
+	-WAITING 
+	-TERMINATED
+
+
+Ütemezés:
+	Célja: ateresztokepesseg novelese, Igazsagossag, hatekonysag, valaszido optimalizalasa, hataridok betartasa
+	
+Ütemezési algok:
+	-Kötegelt (batch):
+		-A programok egymas utan futnak le a felhasznalonak nincs beleszolasa
+		Célja: Hatékonyság, áteresztőképesség
+		
+	Interaktiv rendszer
+		-Felhasznalo jelen van, fontos a valaszido
+	
+	Valos ideju rendszer:
+		-Hataridok betartasa a cel
+		-Minden feladat x idon belul vegrehajtodik
+	
+Kontextuscsere:
+	-Amikor az OS átvált egyik processzrol masikra futas kozben
+		Lepesei:
+			-Futo process megall
+			-Elmenti az allapotat PCB-be
+			-Egy masik process PCB-jet betolti 
+			-Onnan folytatja ahonnan abbahagyta
+	-Kontextuscsere kozben a CPU nem vegez munkat igy erdemes minimalizalni
+		

@@ -51,4 +51,34 @@ Binaris keresofa:
 			-bal reszfa -> gyoker -> jobb reszfa ==> novekvo sorrendbe rendezi a fat
 
 Kiegyensulyozott(piros fekete) fa:
+	-garantlja, hogy O(logn) alatt lehessen keresni 
+	-O(logn) alatt tudja rendezni magat ha elrontodna
+		Szabalyai:
+			-minden csucs piros vagy fekete
+			-gyoker fekete
+			-minden level fekete
+			-piros csucsoknak minden gyereke fekete
+			-barmely csúcsból barmely levelig ugyanannyi fekete csucs van
+
+Hasito tabla:
+		-ahany helyunk van a tablaba annyival osztjuk az elemeket -> maradek alapjan tarolunk
+		-pl 7 hely minden 7 el osztunk es maradek alapjan tarolunk
+		-ha utkozes van akkor lancolt lista
+		-legjobb O(1) legrosszabb o(n)
+		
+
+Fak abrazolasa:	
+	-Gyerek ellista (szulo, gyerekek listaja)
+	-Elso fiu, apa ,testver
+	-Binaris fa: szulo, bal es jobb gyerek
+
+Grafok abrazolasa:
+	-Szomszedsagi lista
+	-Szomszedsagi matrix
+
+
+
+
+
+
 	-

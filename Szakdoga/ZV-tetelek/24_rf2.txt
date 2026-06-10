@@ -1,0 +1,59 @@
+Projektmenedzsment. Költségbecslés, szoftvermérés.
+
+
+Projektmenedzsment: projekt céljainak elérésere szolgál 
+	Reszei:
+		-Tervezes (ki mit csinal)
+		-Utemezes (hataridok)
+		-Kockazat kezeles (mi sulhet el rosszul)
+		-Csapatvezetes (emeberek iranyitasa)
+		-Koltsegkezeles (budget tartasa)
+		
+Ha nullarol kezdjük a projektet: 
+	-dekompozicio: elemi reszekre bontjuk
+
+Mérföldkő:
+	-Projekt ellenorzesi pontja, van egy datum, hogy minek kell kesz lennie erre az idopontra (projekt egy reszenek) ez egy merfoldko
+	-Vagy teljesul vagy nem, nincs olyan, hogy "60% kész"
+	-Ha nem teljesul eleg valoszinu, hogy csuszik a projekt
+
+Költségbecslés módszerei:
+	-korábbi projektek alapján
+	-szakértői becslés alapján
+	-nyerő ár (ha pl egy megerendelo x osszegete ad, ami fixen kevessebbe kerul)
+	-dekompozicio:
+		-meret alapu (ha mar van meglevo komponens)
+		-Lines of Code (ha ismerjük a programnyelvet)
+		-Function Point (ha nyevlfuggetlen becsles kell)
+		-Folyamatalapu (ha pontosan ismerjük a funciokat)
+	-Construtive Cost Model
+		-matematikai koltsegbecsulo modell
+		Fajtái:
+			-COCOMO 1:
+				-csak a kodsorok szamat veszi figyelembe
+				-nem veszi figyelmebe a kulobsegeket fejlesztok kozott (tapasztalat/gyorsasag) 
+			-COCOMO 2:
+				-figyelemebe veszi a fejlesztok tapasztalatat
+				-projekt környezetet
+				-fejlesztok gyorsasagat
+				-3 fajta van (Basic, Intermediate, Detailed) 
+Szoftvermérés:
+	-szoftver minőségének mérése (A szoftver minőségének numerikus mérése)
+	-metrikakat merunk
+	-ket fele metrika:
+		-vezerlesi (folyamatokra vonatkozik)
+		-prediktor metrika (termekre vonatkozik)
+	-minosegi metrikak:
+		-mennyi sor az egesz
+		-mennyi hiba van bennük
+		-hibak javitasi ideje
+
+	
+
+
+
+
+
+
+
+
