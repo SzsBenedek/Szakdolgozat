@@ -1,0 +1,59 @@
+Egyszerű adattípusok: egész, valós, logikai és karakter típusok és kifejezések. Az
+egyszerű típusok reprezentációja, számábrázolási tartományuk, pontosságuk, memória
+igényük és műveleteik. Az összetett adattípusok és a típusképzések, valamint
+megvalósításuk C nyelven. A pointer, a tömb, a rekord és az unió típus. Az egyes
+típusok szerepe, használata.
+
+Egesz tipusok
+short - 16 bit - -32000 - +32000
+int -32 bit -2,1 milliard - 2,1 milliard
+long - 64 bites 2^64 nagyon nagy szam
+
+Tul es alulcsordulas ha tul lep valamelyik hataron az ertek 
+
+Signed - lehet negativ 
+Unsigned - csak pozitiv lehet de az egesz tartomany pozitívban van igy nagyobb szamok tarolhatok
+
+Kettes komplemens:
+	Negativ szamok tarolasa van
+		-1.megforditjuk a biteket
+		-2.hozzaadunk 1et
+Karakter tipus (char):
+	-valojaban ez egy 8 bites egesz szam 
+	-minden karakterhez tarotik egy szam ASCII alapjan
+	-ha hozzaadunk egyet akkor csak lep egyet az ascii tablan
+
+Logikai tipus:
+	-boolean 0 vagy 1 - 8 bit tarolodik
+	-ilyen csak stdbool konyvtarral erheto el
+
+
+	-float 32 bit (7tizedesjegy)
+	-double 64 bit (15 tizedesjegy)
+	-tarolas pl float-nak, 1-8-23 bit (elojel, kitevo,matissza)
+	-nem pontos, mantissza mivel 23 bit, véges
+	-pl bankok ezert nem hasznaljak
+
+Tömb:
+	- Azonos típusú elemek egymás mellett a memóriában
+	- Fix méret
+	- 0tol indexelunk
+	- Memoriaban -> elemszam * tipus merete
+	- Deklaracio int szam[3] = {4,5,76};
+
+Pointer:
+	int a = 5;      // normál változó
+	int* p = &a;    // pointer – tárolja az 'a' címét
+	*p = 10;        // a értékét 10-re változtatja
+	-malloc, free memoriakezeles
+	
+Struck:
+	-Különböző típusok egyben
+	-minden mezonak sajat memoria van lefoglalva
+	-egyszerre akar az osszes elerheto
+	
+Union:
+	-kulonbozo tipusok egyben
+	-egyszerre csak 1 mezo hasznalhato
+	-memoriahatekony
+

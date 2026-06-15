@@ -2,3 +2,9 @@ Szűrés képtérben (átlagoló szűrő, Gauss-simírás, medián- és min-max 
 frekvenciatérben (konvolúciós tétel, az alul- és felül-áteresztő szűrés frekvenciamaszkjai)
 
 https://www.youtube.com/watch?v=7T34qhAXpfE
+
+Szűrés képtérben
+
+Átlagoló szűrés:
+	-veszünk az erdeti kepet es egy maszkkal vegig simitjuk a kepet	
+	-pl 3x3-nal a

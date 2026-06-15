@@ -1,3 +1,7 @@
+Lineáris egyenletrendszerek, mátrixok és a lineáris egyenletrendszerek közötti
+kapcsolat felírása. Eliminációs módszerek, mátrixok trianguláris felbontásai (LU-,
+Cholesky-, QR-felbontás).
+
 matrix egyenletrenszer ax=b felirt alakban
 mikor van megoldasa egy egyenlet rendszernek?
 -Ha a det =/= 0 akkor 1 megoldasa van, ha det = 0 es b-re illeszkedik akkor vegetelen van ha det = 0 es nem illeszkedik b-re akkor nincs

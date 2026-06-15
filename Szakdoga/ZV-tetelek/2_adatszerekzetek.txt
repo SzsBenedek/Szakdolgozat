@@ -2,6 +2,7 @@ Elemi adatszerkezetek, bináris keresőfák, hasító táblázatok, gráfok és 
 számítógépes reprezentációja.
 
 Elemi adatszerkezetek: 
+	
 	-Verem (Stack) LIFO -> 4,5,7 -> 7 ((Pringles henger))
 			-Push (listába tétel)
 			-Pop (utolsó elem kivétele)

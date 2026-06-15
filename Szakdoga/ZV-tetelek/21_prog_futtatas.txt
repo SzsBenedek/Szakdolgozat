@@ -1,0 +1,11 @@
+Java és C++ programok fordítása és futtatása. Parancssori paraméterek, fordítási
+opciók, nagyobb projektek fordítása. Absztrakt-, interfész- és generikus osztályok,
+virtuális eljárások. A virtuális eljárások megvalósítása, szerepe, használata.
+
+Java:
+	-byte kódra fordít, amit JVM értelmez
+	
+	-Futtatashoz eleg JRE (Java Runtime Environment)
+	
+C++:
+	-gépi kódra fordít
