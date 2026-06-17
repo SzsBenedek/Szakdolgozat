@@ -74,3 +74,10 @@ Mélységi keresés:
 	-Fekete, szurke, feher
 	-Gyökérből teljesen lemegy az aljáig
 	-van egy discovery es egy finish time - (szürke, fekete)
+
+
+
+Amikor megkaptam a tételt vegyes érzéseim voltak. A tétel jó, viszont szerintem nagyon hosszú. Békési kérdezett végig, más meg sem szólalt, sok dologra tudtam válaszolni, viszont volt olyan is amire nem. Volt, hogy nagyon specifikus dolgokat akart hallani, mint például a mélységi bejárásnál nem volt elég neki a "felfedezés és befejezés ideje", ő a discovery és finish time-ot szerette volna hallani. 
+Nagy léptékben haladtunk végig, minden részbe belekérdezett és mindenre kért példát. Példa kérdések: Mondjak egy mohó módszerrel megvalósított problémát. Feleltem, hogy töredékes hátizsák. Mondta, hogy magyarázzam el. Rendező algoritmusoknál az összefésülő rendezést és a gyorsrendezést kellett kifejtenem, előzőt nem tudtam úgy elmagyarázni, hogy tetszen neki, de a második sikerült. Elmagyaráztam a stabilitást, és a helyben végzett rendezés fogalmát, ennek örült, mondtam időigényeket is, látszólag szerette. Minimális feszítőfáknál kíváncsi volt, hogy miből indul ki a Kruskal és a Prim algoritmus, és ilyesmi kérdések.
+
+Alapból szét voltam menve. Nem kezelem jól az ilyen helyzeteket. Békési kérdezett, nem úgy készültem fel a tételből ahogy ő elvárta volna. Én azt hittem több algoritmus futtatás lesz, de őt inkább a mögöttes elmélet érdekelte. Az se segített, hogy nem volt pontos a szóhasználatom, de nem tett fel direkt nehéz kérdéseket és ha látta, hogy értem de nem tudom kinyögni akkor írjam le a táblára és hátha úgy jön a tudás.

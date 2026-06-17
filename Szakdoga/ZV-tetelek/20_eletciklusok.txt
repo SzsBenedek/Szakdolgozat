@@ -1,0 +1,57 @@
+Objektumok életciklusa, létrehozás, inicializálás, másolás, megszüntetés.
+Dinamikus, lokális és statikus objektumok létrehozása. A statikus adattagok és
+metódusok, valamint szerepük a programozásban. Operáció és operátor overloading a
+JAVA és C++ nyelvekben. Kivételkezelés.
+
+Életciklus:
+	-Létrehozás -> Inicializálás -> Esetleges másolás -> Megszűnés
+
+Létrehozás:
+	-Helyfoglalas -> Konstruktor meghivasa -> Ertek visszaadasa (Java-ban referencia, C++-ban pointer)
+	3 hely ahol létrehozható objektum:
+		-Dinamikus (heap):
+			-new kulcszoval tortenik c++-ban a delete kulcszoval tudjuk megszuntetni kulonben memory leak
+			-javaban ezt a garbage collector végzi
+		-Lokalisan (stack) 
+			-csak c++-ban lehetséges (stack-ben tárolódik, javaban minden obj heap-en van)
+		-Statikus: program teljes futasa alatt el 
+Inicializalas:
+	-Konstruktorral tortenik
+		-Default konstruktor (nincs parameter, ha nincs mas konstrutork, a fordito general egy ilyet)
+		-Parameteres (vannak parameterei, futasidoben testreszabhatok)
+		-Masolo (egy masik obejktum van parametermen (aminek az allapotat lemasolja)
+Másolás:
+	-amig primitiv adatokat masolunk addig szep es jo (csak bitenkent masolunk)
+	-de amint pointerr/referenciát másolunk dönteni kell sekély és mély másolás között
+	
+	Sekély másolás: Csak a memóriacím lesz lemásolva -> memóriahatékony
+	Mély másolás: Az egész obj le lesz másolva másik memóriaterületre -> Független -> Biztonságosabb
+
+Megszűnés:
+	-Javaban ezt a GC végzi 
+	-c++ban:	
+		-lokalisan letrehozotaknak destruktor alapbol hivodik amint scope-on kivul esik
+		-dinamikusan delete kulcszoval kell-> kulonben memoriaszivargas
+		-statikusnal a program vegen hivodik meg
+
+Static:
+	-Statikus adattagok: Közösek osztály számára, nem kötődnek egy obejktumhoz sem, pl szamlalo
+	-Statikus metodusok: Osztalyon keresztul hivhato, obj letrehozas nelkul
+	-A "szerepük a programozásban": pl szamlalo, konstansok, seged metodusok pl Math.sqrt
+	
+Metodus overloading:
+	-ugyanaz a metodusnev csak mas paraméterekkel (fordito parameterlistabol tud kulonboztetni)
+	
+Operator overloading:
+	-Ilyen csak c++ban letezik (javaban csak a string osztályra)
+	-például egy vector osztályban az osszeadas máshogy mukodjon, mint amúgy 
+
+Kivételkezelés:
+	-throw (amikor hiba keletkezik eldobjuk a kivetel objektumot)
+	-throws (csak Java-ban, tudjuk jelezni milyen tipusu hibát varunk)
+	-catch (elkapja es kezeli a hibat)
+
+-Try Catch Finnaly mechanizmus	
+	Try: olyan utasitas amire tudjuk, hogy lehet hibát okoz
+	Catch: Elkapja az adott hibát/hibakat
+	Finally(csak javaba van): ez a resz mindig lefut, ha tortent hiba ha nem

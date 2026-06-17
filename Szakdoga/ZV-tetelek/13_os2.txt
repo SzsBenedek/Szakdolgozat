@@ -1,0 +1,57 @@
+Processzusok kommunikációja, versenyhelyzetek, kölcsönös kizárás. Konkurens és
+kooperatív processzusok. Kritikus szekciók és megvalósítási módszereik: kölcsönös
+kizárás tevékeny várakozással (megszakítások tiltása, változók zárolása, szigorú
+váltogatás, Peterson megoldása, TSL utasítás). Altatás és ébresztés: termelő-fogyasztó
+probléma, szemaforok, mutex-ek, monitorok, Üzenet, adás, vétel. Írók és olvasók
+problémája. Sorompók.
+
+Konkurens processzusok: egyszerre futónak tűnő processzusok de nem (OS gyorsan valtogat koztuk csak)
+						-tobb magos processzoroknál lehet tényleges konkurencia
+						-ugyanazt a memoriat hasznaljak
+Kooperativ processzusok: egyszerre futo processzusok amik komunikalnak egymassal/hatassal vannak egymasra
+						-pl: memóriaterület osztozkodás, azonos fájl használata
+						-minden kooperativ egyben konkurens is 
+Független processzusok: Nem egyszerre futó processzusok amik nem tudnak egymasról/nem függenek egymástól
+
+Versenyhelyzet: Pl két processzus olvassa be egy valtozo erteket majd hozzaad egyet, 
+				-ha ,,osszecsuszik" a ket processzus akkor mindegyik még 0-át olvas be es 2 helyett csak 1 lesz az eredmény
+				-Ütemezés szerencséjén múlik az egész
+
+Kölcsönös kizárás:
+	-garantalja, hogy a kritikus szekcioba (amin megy a memoriaosztozas) egyszerre csak 1 processzus lepjen be
+	-4 feltele van:
+		-egyszerre csak 1 processzus lehet a kritikus reszen
+		-kritikus szekcion kivul nem blokkolhatjak egymast a processzusok
+		-senki ne varjon orokke a belepesre
+		-nem szabad processzusok sebessegerol semmit feltelelezni (pl P1 gyorsabb, mint P2)
+
+5 féle kölcsönös kizárás:
+	Megszakitások tiltása: Meg kell várni még az a proccesszus végez
+		-Csak 1 magos processzoroknál működik
+	Zárolt változók: 
+		-mindig van egy ,,tábla" amin vagy szabad vagy foglalt van 
+		-mi van, ha egyszerre kettő processzus nézi -> verseyhelyzet megint
+	Szigorú váltogatás:
+		-Van egy turn valtozonk ami megmondja ki lesz soros ezzel elkerulve a versenyhelyzetet
+		-Kötelező váltások -> lassúság
+	Peterson megoldas:
+		-Minden processzus jelzi a belepesi szandekat
+		-Ha mindketto egyszerre jelez akkor a turn mutato alapjan dont
+	TSL:
+		-A foglalt tábla megfordítása és belépés a kritikus részbe egyszerre történik így nem lehet, hogy kettő lépjen be véletlen
+		
+Fogyasztó probléma:
+	-Van egy pékség amiben van egy termelő és egy fogyasztó (pl 10 hely van a polcon)
+	-Ha tele a polc: tele van a puffer
+	-Ha üres akkor: üres a puffer
+	-Ha a termelo vagy fogyaszto egyszerre akar cselekedni, megint versenyhelyzet
+	-Nem csak kölcsönös kizárás van hanem feltételes várakozás
+
+Szemaforok:
+	-Kölcsönös kizárás és feltételes várakozás megoldására szolgál
+	-fogyaszto problemahoz 3 szemafor kell (empty, full, mutex)
+	-mutex biztositja, hogy lefoglalja a polcot ugymond es felszabaditja
+		-kritikus reszre kell, megvedi a polcot, csak az hasznalhatja aki lefoglalta
+	-ha tele a polc es fel akar rakni egyet akkor elalszik a termelo 
+	-ha ures a polc es venni akar egyet a polcrol akkor elalszik a fogyaszto
+	-mutex es szemafor kozotti kulonbseg: mutex csak 0 vagy 1, szemafor barmilyen nemnegativ egesz szamot felvehet

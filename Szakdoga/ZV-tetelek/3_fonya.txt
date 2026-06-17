@@ -26,6 +26,11 @@ Reguláris nyelvek:
 			-Osszefuzes: ab -> a utana b
 			-Unio: a|b -> a vagy b-t
 			-Kleene(klíni) csillag: (ab)* -> akarmennyi ab egymas utan, 0 is lehet
+		-Alapnyelvek
+			-∅ (üres nyelv)
+			-ε (üres szó)
+			-a (egyetlen betűt tartalmazó nyelvek)
+		
 
 Véges automata(Det):
 	-Regualis nyelveket ismeri fel

@@ -28,6 +28,7 @@ Cholesky(LL^t) felbontas:
 	
 LU felbontas 
 	-akkor adhato meg ha a matrix nem szingularis (determinansa nem 0)
+	-U-t akarjuk megkapni L-t pedig egy melle rakott egysegmatrixbol kapjuk
 	-A = L x U alakban felirhato
 	-Gauss elimnacioval megkapjuk U-t
 	-eliminacio szorzokat feljegyezve kapjuk meg L-t
